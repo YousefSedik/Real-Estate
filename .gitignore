@@ -1,0 +1,32 @@
+# Ignore Visual Studio files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build directories
+bin/
+obj/
+
+# Ignore ASP.NET temporary files
+Generated/
+App_Data/
+App_Start/
+
+# Ignore ASP.NET database files
+*.mdf
+*.ldf
+*.db
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+
+# Ignore package and dependency files
+packages/
+project.lock.json
+project.fragment.lock.json

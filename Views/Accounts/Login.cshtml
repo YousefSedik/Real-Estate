@@ -1,0 +1,74 @@
+﻿@model RealStats.ViewModel.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="page-head">
+    <div class="container">
+        <div class="row">
+            <div class="page-head-content">
+                <h1 class="page-title">Login To Your Account</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End page header -->
+<!-- Login-area -->
+<div class="register-area" style="background-color: rgb(249, 249, 249);">
+    <div class="container">
+        <div class="col-md-6">
+            <div class="box-for overflow">
+                <div class="col-md-12 col-xs-12 login-blocks">
+                    <h2>Login:</h2>
+
+                    <!-- Login Form -->
+                    <form asp-action="Login" method="post">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="Email" value="@Model.Email" />
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="Password" />
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- If the login fails, display the error from Identity -->
+                        @if (ViewData["LoginError"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                <strong>@ViewData["LoginError"]</strong>
+                            </div>
+                        }
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" asp-for="RememberMe" />
+                            <label class="form-check-label" for="rememberMe">Remember Me</label>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-default">Log in</button>
+                        </div>
+                    </form>
+
+                    <!-- If user doesn't have an account, show the registration link -->
+                    <div class="text-center">
+                        <p>Don't have an account? <a asp-controller="Accounts" asp-action="Register">Create one here</a>.</p>
+                    </div>
+
+                    <h2>Social login:</h2>
+                    <p>
+                        <a class="login-social" href="#"><i class="fa fa-facebook"></i>&nbsp;Facebook</a>
+                        <a class="login-social" href="#"><i class="fa fa-google-plus"></i>&nbsp;Gmail</a>
+                        <a class="login-social" href="#"><i class="fa fa-twitter"></i>&nbsp;Twitter</a>
+                    </p>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

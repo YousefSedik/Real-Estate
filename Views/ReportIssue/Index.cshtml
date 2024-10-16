@@ -1,0 +1,43 @@
+﻿<div class="container">
+    <div class="row justify-content-center">
+
+        @if (ViewData["reportIssues"] != null)
+        {
+            var reportIssues = ViewData["reportIssues"] as List<ReportIssue>;
+            if (reportIssues != null && reportIssues.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Tenant Name</th>
+                            <th scope="col">Property Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var issue in reportIssues)
+                        {
+                            <tr>
+                                <td>@issue.Title</td>
+                                <td>@issue.Description</td>
+                                <td>@issue.Tenant.User.Name</td>
+                                <td>@issue.Properity.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <p>No report issues available.</p>
+            }
+        }
+        else
+        {
+            <p>Report issues not loaded.</p>
+        }
+
+    </div>
+</div>
