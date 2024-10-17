@@ -1,0 +1,12 @@
+﻿<!-- Views/Shared/_LeaseAgreementDetails.cshtml -->
+@model RealStats.Models.LeaseAgreement
+
+<div class="lease-agreement-details">
+    <h3>Lease Agreement Details</h3>
+    <p><strong>Lease Status:</strong> @(Model.LeaseStatus ? "Active" : "Inactive")</p>
+    <p><strong>Start Date:</strong> @Model.StartDate.ToString("MM/dd/yyyy")</p>
+    <p><strong>End Date:</strong> @Model.EndDate.ToString("MM/dd/yyyy")</p>
+    <p><strong>Property:</strong> @Model.Properity.Name</p>
+    <p><strong>Manager:</strong> @Model.Manager.User.Name</p>
+    <p><strong>Tenant:</strong> @Model.Tenant.User.Name</p>
+</div>
