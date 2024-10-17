@@ -11,7 +11,7 @@ namespace RealStats.Models
         public double Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public Payment() { 
-        PaymentDate = DateTime.Now;
+            PaymentDate = DateTime.Now;
         }
         public int LeaseAgreementId { get; set; }
         [ForeignKey("LeaseAgreementId")]

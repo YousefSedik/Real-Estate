@@ -12,12 +12,6 @@ namespace RealStats.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        [Required]
-        public DateTime PaymentDueDate { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "Termination Clause must be a non-negative value.")]
-        public double TerminationClause { get; set; }
-
         public ICollection<Payment> Payments { get; set; }
         public int ProperityId { get; set; }
         [ForeignKey("ProperityId")]

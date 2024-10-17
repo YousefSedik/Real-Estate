@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RealStats.Data;
 using RealStats.Models;
 using RealStats.ViewModel;
+using System.Security.Claims;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace RealStats.Controllers
 {
@@ -15,19 +19,22 @@ namespace RealStats.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             ViewBag.Features = _context.Features.ToList();
-            return View();
+            var model = new AddProperityModel();
+            return View(model);
         }
-
 
         [HttpPost]
         public IActionResult Index(AddProperityModel model)
         {
             if (ModelState.IsValid)
             {
-                Properity properity = new Properity()
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var manager = _context.Managers.FirstOrDefault(m => m.UserId == userId);
+                Properity property = new Properity()
                 {
                     Name = model.Name,
                     Country = model.Country,
@@ -39,49 +46,63 @@ namespace RealStats.Controllers
                     Bathrooms = model.Bathrooms,
                     Garages = model.Garages,
                     Price = model.Price,
-                    Status = true
+                    Status = true,
+                    manager = manager
                 };
 
-                List<Feature> feature = new List<Feature>();
+                List<Feature> features = new List<Feature>();
                 if (model.Features != null && model.Features.Count > 0)
                 {
-                    feature = _context.Features.Where(f => model.Features.Contains(f.Id)).ToList();
-                    properity.Features = feature;
+                    features = _context.Features.Where(f => model.Features.Contains(f.Id)).ToList();
+                    property.Features = features;
                 }
+
                 if (model.images != null && model.images.Length > 0)
                 {
+                    var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(imagesPath))
+                    {
+                        Directory.CreateDirectory(imagesPath);
+                    }
+
                     foreach (var image in model.images)
                     {
                         if (image.Length > 0)
                         {
                             string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+                            var imagePath = Path.Combine(imagesPath, uniqueFileName);
                             using (var stream = new FileStream(imagePath, FileMode.Create))
                             {
                                 image.CopyTo(stream);
                             }
+
                             var img = new Image
                             {
                                 ImageUrl = "/images/" + uniqueFileName,
-                                Properity = properity
+                                Properity = property
                             };
-                            if (properity.Images == null)
+
+                            if (property.Images == null)
                             {
-                                properity.Images = new List<Image>();
+                                property.Images = new List<Image>();
                             }
-                            properity.Images.Add(img);
+                            property.Images.Add(img);
                         }
                     }
                 }
-                _context.Properities.Add(properity);
+
+                _context.Properities.Add(property);
                 _context.SaveChanges();
+
                 ViewBag.Message = "Form successfully submitted!";
             }
             else
             {
                 ViewBag.Message = "There was an error with the form.";
             }
-            return View();
+
+            ViewBag.Features = _context.Features.ToList(); // Ensure the features are available in the view
+            return View(model); // Pass the model back to the view in case of validation errors
         }
     }
 }

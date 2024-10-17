@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RealStats.Data;
@@ -27,6 +28,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromDays(14);  // Adjust the expiration time
     options.SlidingExpiration = true;  // Optional: Enable sliding expiration (the cookie refreshes on activity)
 });
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; 
+});
+
 
 var app = builder.Build();
 

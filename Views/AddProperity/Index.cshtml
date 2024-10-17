@@ -1,4 +1,6 @@
-﻿<div class="page-head">
+﻿@model RealStats.ViewModel.AddProperityModel
+
+<div class="page-head">
     <div class="container">
         <div class="row">
             <div class="page-head-content">
@@ -7,7 +9,7 @@
         </div>
     </div>
 </div>
-<!-- End page header -->
+
 <!-- property area -->
 <div class="content-area submit-property" style="background-color: #FCFCFC;">
     &nbsp;
@@ -16,7 +18,8 @@
             <div class="wizard-container">
 
                 <div class="wizard-card ct-wizard-orange" id="wizardProperty">
-                    <form action="" method="">
+                    <!-- Updated action attribute for form submission -->
+                    <form asp-action="Index" method="post" enctype="multipart/form-data">
                         <div class="wizard-header">
                             <h3>
                                 <b>Add</b> YOUR PROPERTY <br>
@@ -24,110 +27,192 @@
                             </h3>
                         </div>
 
+                        <!-- Error validation summary -->
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                         <ul>
-                            <li><a href="#step1" data-toggle="tab">Information about Properity</a></li>
-                            <li><a href="#step2" data-toggle="tab">Lease agreement</a></li>
-                            <li><a href="#step4" data-toggle="tab">Finished </a></li>
+                            <li><a href="#step1" data-toggle="tab">Information about Property</a></li>
+                            <li><a href="#step2" data-toggle="tab">Terms And Conditions</a></li>
+                            <li><a href="#step4" data-toggle="tab">Finished</a></li>
                         </ul>
 
                         <div class="tab-content">
-
                             <div class="tab-pane" id="step1">
                                 <h4 class="info-text"> Let's start with the basic information.</h4>
-                                <div class="row p-b-15  ">
-                                    <!--Start Form-->
+                                <!-- Display Validation Errors -->
+                                @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.SelectMany(v => v.Errors).Any())
+                                {
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                            {
+                                                <li>@error.ErrorMessage</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+                                <div class="row p-b-15">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Property name <small>(required)</small></label>
-                                            <input name="propertyname" type="text" class="form-control" placeholder="Super villa ...">
+                                            <label>Property Name <small>(required)</small></label>
+                                            <input name="Name" type="text" class="form-control" placeholder="Super villa ..." value="@Model.Name">
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Property price <small>(required)</small></label>
-                                            <input name="propertyprice" type="text" class="form-control" placeholder="3330000">
+                                            <label>Property Price <small>(required)</small></label>
+                                            <input name="Price" type="text" class="form-control" placeholder="3330000" value="@Model.Price">
+                                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
                                             <label>Property Description :</label>
-                                            <textarea name="discrition" class="form-control"></textarea>
+                                            <textarea name="Description" class="form-control">@Model.Description</textarea>
+                                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
                                             <label>Country <small>(required)</small></label>
-                                            <input name="Country" type="text" class="form-control" placeholder="Egypt">
+                                            <input name="Country" type="text" class="form-control" placeholder="Egypt" value="@Model.Country">
+                                            @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
                                             <label>City <small>(required)</small></label>
-                                            <input name="City" type="text" class="form-control" placeholder="Damietta">
+                                            <input name="City" type="text" class="form-control" placeholder="Damietta" value="@Model.City">
+                                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
                                             <label>Street <small>(required)</small></label>
-                                            <input name="Street" type="text" class="form-control" placeholder="15-street">
+                                            <input name="Street" type="text" class="form-control" placeholder="15-street" value="@Model.Street">
+                                            @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                    <div class="col-sm-4" style="width: 50%" ;>
-                                        <div class="form-group">
-                                            <label>beds <small>(required)</small></label>
-                                            <input name="beds" type="number" class="form-control" placeholder="3">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>baths <small>(required)</small></label>
-                                            <input name="baths" type="number" class="form-control" placeholder="2">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Garage <small>(required)</small></label>
-                                            <input name="Garages" type="number" class="form-control" placeholder="1">
-                                        </div>
-                                    </div>
+
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="property-images">Chose Images :</label>
-                                            <input class="form-control" type="file" id="property-images">
-                                            <p class="help-block">Select multipel images for your property .</p>
+                                            <label>Area <small>(m2)</small></label>
+                                            <input name="Area" type="text" class="form-control" placeholder="15-street" value="@Model.Area">
+                                            @Html.ValidationMessageFor(model => model.Area, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Beds <small>(required)</small></label>
+                                            <input name="Bedrooms" type="number" class="form-control" placeholder="3" value="@Model.Bedrooms">
+                                            @Html.ValidationMessageFor(model => model.Bedrooms, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Baths <small>(required)</small></label>
+                                            <input name="Bathrooms" type="number" class="form-control" placeholder="2" value="@Model.Bathrooms">
+                                            @Html.ValidationMessageFor(model => model.Bathrooms, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Garage <small>(required)</small></label>
+                                            <input name="Garages" type="number" class="form-control" placeholder="1" value="@Model.Garages">
+                                            @Html.ValidationMessageFor(model => model.Garages, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="property-images">Choose Images:</label>
+                                            <!-- Changed input name to match model -->
+                                            <input class="form-control" type="file" id="property-images" name="images" multiple>
+                                            @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-danger" })
+                                            <p class="help-block">Select multiple images for your property.</p>
+                                        </div>
+                                    </div>
+
                                     <div class="col-sm-12 padding-top-15">
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input type="checkbox"> Swimming Pool
+                                                        <input type="checkbox" name="Features[]" value="1"> Swimming Pool
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <!--  End step 1 -->
 
                             <div class="tab-pane" id="step2">
+                                <h4 class="info-text"> Terms and Conditions </h4>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Terms <small>(required)</small></label>
+                                            <textarea name="Terms" class="form-control">@Model.Terms</textarea>
+                                            @Html.ValidationMessageFor(model => model.Terms, "", new { @class = "text-danger" })
+                                        </div>
 
+                                        <div class="form-group">
+                                            <label>Lease Duration <small>(months or years)</small></label>
+                                            <input name="LeaseDuration" type="number" class="form-control" value="@Model.LeaseDuration">
+                                            @Html.ValidationMessageFor(model => model.LeaseDuration, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Payment Terms</label>
+                                            <textarea name="PaymentTerms" class="form-control">@Model.PaymentTerms</textarea>
+                                            @Html.ValidationMessageFor(model => model.PaymentTerms, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Penalty Clauses</label>
+                                            <textarea name="PenaltyClauses" class="form-control">@Model.PenaltyClauses</textarea>
+                                            @Html.ValidationMessageFor(model => model.PenaltyClauses, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Maintenance Responsibility</label>
+                                            <textarea name="MaintenanceResponsibility" class="form-control">@Model.MaintenanceResponsibility</textarea>
+                                            @Html.ValidationMessageFor(model => model.MaintenanceResponsibility, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Cancellation Policy</label>
+                                            <textarea name="CancellationPolicy" class="form-control">@Model.CancellationPolicy</textarea>
+                                            @Html.ValidationMessageFor(model => model.CancellationPolicy, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Renewal Policy</label>
+                                            <textarea name="RenewalPolicy" class="form-control">@Model.RenewalPolicy</textarea>
+                                            @Html.ValidationMessageFor(model => model.RenewalPolicy, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Insurance Requirements</label>
+                                            <textarea name="InsuranceRequirements" class="form-control">@Model.InsuranceRequirements</textarea>
+                                            @Html.ValidationMessageFor(model => model.InsuranceRequirements, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                             <!-- End step 2 -->
 
                             <div class="tab-pane" id="step4">
                                 <h4 class="info-text"> Finished and submit </h4>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="">
-                                            <p>
-                                                <label><strong>Terms and Conditions</strong></label>
-                                                By accessing or using  GARO ESTATE services, such as
-                                                posting your property advertisement with your personal
-                                                information on our website you agree to the
-                                                collection, use and disclosure of your personal information
-                                                in the legal proper manner
-                                            </p>
-
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" /> <strong>Accept termes and conditions.</strong>
-                                                </label>
-                                            </div>
-
+                                        <p>
+                                            <label><strong>Terms and Conditions</strong></label>
+                                            By accessing or using services, you agree to the
+                                            collection, use, and disclosure of your personal information
+                                            in the legal manner.
+                                        </p>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="Terms"> <strong>Accept terms and conditions.</strong>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +224,7 @@
                         <div class="wizard-footer">
                             <div class="pull-right">
                                 <input type='button' class='btn btn-next btn-primary' name='next' value='Next' />
-                                <input type='button' class='btn btn-finish btn-primary ' name='finish' value='Finish' />
+                                <button type="submit" class='btn btn-finish btn-primary ' name='finish'>Finish</button>
                             </div>
 
                             <div class="pull-left">

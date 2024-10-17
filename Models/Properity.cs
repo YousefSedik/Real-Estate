@@ -42,6 +42,8 @@ namespace RealStats.Models
         [ForeignKey("ManagerId")]
         public Manager manager { get; set; }
 
+        public TermsAndConditions TermsAndConditions { get; set; }
+
         public ICollection<LeaseAgreement> LeaseAgreements { get; set; }    
         public ICollection<Tenant> Tenants { get; set; }
 

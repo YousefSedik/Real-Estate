@@ -1,7 +1,5 @@
 ﻿using RealStats.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Contracts;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace RealStats.ViewModel
 {
@@ -30,5 +28,28 @@ namespace RealStats.ViewModel
         public List<int> Features { get; set; }
         public IFormFile[] images { get; set; }
 
+        // Adding Terms and Conditions fields
+        [Required]
+        public string Terms { get; set; }
+
+        public int LeaseDuration { get; set; } // in months or years
+
+        [MaxLength(500)]
+        public string PaymentTerms { get; set; }
+
+        [MaxLength(500)]
+        public string PenaltyClauses { get; set; }
+
+        [MaxLength(500)]
+        public string MaintenanceResponsibility { get; set; }
+
+        [MaxLength(500)]
+        public string CancellationPolicy { get; set; }
+
+        [MaxLength(500)]
+        public string RenewalPolicy { get; set; }
+
+        [MaxLength(500)]
+        public string InsuranceRequirements { get; set; }
     }
 }
