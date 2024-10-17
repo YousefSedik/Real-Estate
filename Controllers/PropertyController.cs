@@ -44,8 +44,8 @@ public class PropertyController : Controller
         {
             leaseAgreement = await _context.LeaseAgreement.FirstOrDefaultAsync(
                 l => l.Properity == property && 
-                     l.TenantId == tenant.Id && 
-                     l.EndDate > DateTime.Now);
+                 l.TenantId == tenant.Id && 
+                 l.EndDate > DateTime.Now);
         }
 
         ViewData["property"] = property;
