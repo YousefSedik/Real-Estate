@@ -10,8 +10,6 @@ namespace RealStats.Models
         [Required]
         public string Terms { get; set; }
 
-        public int LeaseDuration { get; set; } // In months or years
-
         [MaxLength(500)]
         public string PaymentTerms { get; set; }
 

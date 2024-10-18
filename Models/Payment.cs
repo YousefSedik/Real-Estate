@@ -10,9 +10,9 @@ namespace RealStats.Models
         [Required]
         public double Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public Payment() { 
-            PaymentDate = DateTime.Now;
-        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public bool IsPaid { get; set; }
         public int LeaseAgreementId { get; set; }
         [ForeignKey("LeaseAgreementId")]
         public LeaseAgreement LeaseAgreement { get; set; }

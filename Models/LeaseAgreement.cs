@@ -12,6 +12,8 @@ namespace RealStats.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
+        public int LeaseDuration { get; set; }
+
         public ICollection<Payment> Payments { get; set; }
         public int ProperityId { get; set; }
         [ForeignKey("ProperityId")]

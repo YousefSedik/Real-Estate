@@ -17,7 +17,7 @@ public class PropertyController : Controller
         _userManager = userManager;
     }
 
-    [Route("/Property/{propertyId}"), Authorize]
+    [Route("/Properity/{propertyId}"), Authorize]
     public async Task<IActionResult> Index(int propertyId)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -42,10 +42,12 @@ public class PropertyController : Controller
     
         if (!user.IsManager && tenant != null)
         {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             leaseAgreement = await _context.LeaseAgreement.FirstOrDefaultAsync(
                 l => l.Properity == property && 
                  l.TenantId == tenant.Id && 
                  l.EndDate > DateTime.Now);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         }
 
         ViewData["property"] = property;

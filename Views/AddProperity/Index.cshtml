@@ -151,13 +151,13 @@
                                             <textarea name="Terms" class="form-control">@Model.Terms</textarea>
                                             @Html.ValidationMessageFor(model => model.Terms, "", new { @class = "text-danger" })
                                         </div>
-
-                                        <div class="form-group">
-                                            <label>Lease Duration <small>(months or years)</small></label>
-                                            <input name="LeaseDuration" type="number" class="form-control" value="@Model.LeaseDuration">
-                                            @Html.ValidationMessageFor(model => model.LeaseDuration, "", new { @class = "text-danger" })
-                                        </div>
-
+                                        
+                                         @* <div class="form-group">
+                                             <label>Lease Duration <small>(months or years)</small></label>
+                                             <input name="LeaseDuration" type="number" class="form-control" value="@Model.LeaseDuration">
+                                             @Html.ValidationMessageFor(model => model.LeaseDuration, "", new { @class = "text-danger" })
+                                         </div>
+                                         *@
                                         <div class="form-group">
                                             <label>Payment Terms</label>
                                             <textarea name="PaymentTerms" class="form-control">@Model.PaymentTerms</textarea>

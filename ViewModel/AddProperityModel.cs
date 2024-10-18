@@ -32,7 +32,7 @@ namespace RealStats.ViewModel
         [Required]
         public string Terms { get; set; }
 
-        public int LeaseDuration { get; set; } // in months or years
+        //public int LeaseDuration { get; set; } // in months or years
 
         [MaxLength(500)]
         public string PaymentTerms { get; set; }

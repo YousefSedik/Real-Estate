@@ -34,6 +34,7 @@ namespace RealStats.Data
         public DbSet<ReportIssue> ReportIssues { get; set; }
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Feature> Features { get; set; }
+        public DbSet<TermsAndConditions> TermsAndConditions { get; set; }
     }
     
 }
