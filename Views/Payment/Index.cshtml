@@ -37,9 +37,13 @@
                             {
                                 <td>No</td>
                                 <td>Not Paid Yet</td>
-                                <td>
-                                    <a asp-action="Pay" style="padding: 0px 0px" class="btn btn-primary btn-xs">Pay Now</a>
-                                </td>
+                                @if (!(bool)ViewData["is_manager"])
+                                {
+                                    <td>
+                                        <a href="/pay/@payment.Id" style="padding: 0px 0px" class="btn btn-primary btn-xs">Pay Now</a>
+                                    </td>
+                                }
+                                <td></td>
 
                             }
                         </tr>
