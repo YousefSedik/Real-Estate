@@ -24,12 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20241015224216_Initial.cs" />
-    <Compile Remove="Migrations\20241015224216_Initial.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="Views\AddProperity\" />
   </ItemGroup>
 
 </Project>
