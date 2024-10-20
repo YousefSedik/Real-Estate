@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject UserManager<ApplicationUser> UserManager
+@{
+    // Get the current user
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@model List<RealStats.ViewModel.MyProperityViewModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Properties</title>
+    <!-- Bootstrap 3 CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .property-card {
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+            height: 300px; /* Fixed height for the card */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out contents */
+        }
+
+            .property-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+        .property-image {
+            width: 100%;
+            height: 200px; /* Fixed height for the image */
+            object-fit: cover; /* Resize image while maintaining aspect ratio */
+        }
+
+        .btn {
+            margin: 5px 0;
+        }
+
+        .card-body {
+            flex-grow: 1; /* Allow the body to take up available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out title and buttons */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center">Manage Properties</h2>
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var property in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="card property-card">
+                            <img src="@Url.Content(!string.IsNullOrEmpty(property.Image) ? property.Image : "~/Uploads/default-image.jpg")" class="property-image" alt="Property Image" />
+                            <div class="card-body">
+                                <h5 class="card-title">@property.Name</h5>
+                                <div>
+                                    @if (user.IsManager)
+                                    {
+                                        <a href="@Url.Action("Edit", "EditProperity", new { id = property.Id })" class="btn btn-success btn-block">
+                                            <i class="glyphicon glyphicon-edit"></i> Edit
+                                        </a>
+                                        <form action="@Url.Action("Delete", "EditProperity", new { propertyId = property.Id })" method="post" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                                            <button type="submit" class="btn btn-danger btn-block">
+                                                <i class="glyphicon glyphicon-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Payment", "EditProperity", new { leaseAgreementId = property.LeaseAgreementId })" class="btn btn-primary btn-block">
+                                            <i class="glyphicon glyphicon-edit"></i> Pay Bill
+                                        </a>
+                                        <a href="@Url.Action("Create", "ReportIssue", new { property_id = property.Id })" class="btn btn-secondary btn-block" style="background-color: gray; color: white;">
+                                            <i class="glyphicon glyphicon-edit"></i> Report Issue
+                                        </a>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <div class="alert alert-warning text-center">
+                        No properties found for this manager.
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Bootstrap 3 JS and jQuery (optional, for Bootstrap's JavaScript functionality) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>
