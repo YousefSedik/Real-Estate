@@ -1,0 +1,115 @@
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="row justify-content-center">
+        <h3> Payment History</h3>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Paid At</th>
+            </tr>
+            </thead>
+            <tbody>
+        @if (@ViewData["payments"] != null)
+        {
+                var payments = ViewData["payments"] as List<Payment>;
+                var count = 1;
+                if (payments != null && payments.Any())
+                {
+                    foreach (var payment in payments)
+                    {
+                        
+                        <tr>
+                            <td>@count</td>
+                            <td>@payment.StartDate.ToString("MM/dd/yyyy")</td>
+                            @if (payment.IsPaid)
+                            {
+                                <td>Yes</td>
+                                @if (payment.PaymentDate != null)
+                                {
+                                    <td>@payment.PaymentDate.ToString("MM/dd/yyyy")</td>
+                                }
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>No</td>
+                                <td>Not Paid Yet</td>
+                                @if (!(bool)ViewData["is_manager"])
+                                {
+                                    <td>
+                                        <a href="/pay/@payment.Id" style="padding: 0px 0px" class="btn btn-primary btn-xs">Pay Now</a>
+                                    </td>
+                                }
+                                <td></td>
+
+                            }
+                        </tr>
+                        count++;
+                    }
+                    <script> 
+                    @*     get all tr elements *@
+                    var trs = document.querySelectorAll('tr');  
+                    for (var i = 1; i < trs.length; i++) {
+                        var tds = trs[i].querySelectorAll('td');
+                        for (var j = 0; j < tds.length-1; j++) {
+                            if (tds[j].textContent === 'No') {
+                                trs[i].style.backgroundColor = 'rgb(244,79,90)';
+                                
+                            }
+                            else if (tds[j].textContent === 'Yes') {
+                                trs[i].style.backgroundColor = '#53de9e';
+                            }
+                            tds[j].style.color = 'black';
+                            tds[j].style.fontWeight = 400;
+
+                        }
+                    }
+                     </script> 
+                }
+                else
+                {
+                    <p>No payments available.</p>
+                }
+            }
+            else
+            {
+                <p>Payments not loaded.</p>
+            }
+            </tbody>
+        </table>
+        @if (!(bool)ViewData["is_manager"] && ViewData["bill_payment"] != null)
+        {
+            <hr/>
+            <h3 class="mt-4">Bill</h3>
+
+        var bill_payments = ViewData["bill_payment"] as List<Payment>;
+        if (bill_payments != null && bill_payments.Any())
+        {
+            <ul class="list-group mb-3">
+                @foreach (var payment in bill_payments)
+                {
+                    <li class="list-group-item">
+                        <strong>For Month:</strong> @payment.StartDate.ToString("MM/dd/yyyy"), 
+                        <strong>Amount:</strong> $@payment.Amount
+                    </li>
+                }
+            </ul>
+            <h4 class="text-end">
+                <strong>Total:</strong> $@ViewData["total_amount"]
+            </h4>
+            
+            <hr class="my-4" />
+
+        }
+        <h3 class="text-center mt-4">
+            <a asp-action="Pay" class="btn btn-primary btn-lg">Pay Now</a>
+        </h3>
+
+
+
+        }
+    </div>
+</div>
