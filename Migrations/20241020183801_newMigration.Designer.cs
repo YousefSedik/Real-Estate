@@ -12,8 +12,8 @@ using RealStats.Data;
 namespace RealStats.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20241020174910_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241020183801_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
