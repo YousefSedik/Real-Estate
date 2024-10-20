@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<RealStateContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RemoteConnection"),
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlServerOptionsAction: sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
@@ -18,6 +18,7 @@ builder.Services.AddDbContext<RealStateContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(30),
                 errorNumbersToAdd: null);
         }));
+
 
 // Use ApplicationUser for Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

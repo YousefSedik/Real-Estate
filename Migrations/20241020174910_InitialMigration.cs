@@ -291,10 +291,11 @@ namespace RealStats.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LeaseStatus = table.Column<bool>(type: "bit", nullable: false),
+                    LeaseStatus = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LeaseDuration = table.Column<int>(type: "int", nullable: false),
+                    PersonalId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProperityId = table.Column<int>(type: "int", nullable: false),
                     ManagerId = table.Column<int>(type: "int", nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false)
@@ -313,13 +314,13 @@ namespace RealStats.Migrations
                         column: x => x.ProperityId,
                         principalTable: "Properities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LeaseAgreement_Tenant_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenant",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,7 +344,7 @@ namespace RealStats.Migrations
                         column: x => x.TenantsId,
                         principalTable: "Tenant",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -371,7 +372,7 @@ namespace RealStats.Migrations
                         column: x => x.TenantId,
                         principalTable: "Tenant",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -396,6 +397,56 @@ namespace RealStats.Migrations
                         name: "FK_TermsAndConditions_Properities_ProperityId",
                         column: x => x.ProperityId,
                         principalTable: "Properities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractFiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UploadedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LeaseAgreementId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractFiles_LeaseAgreement_LeaseAgreementId",
+                        column: x => x.LeaseAgreementId,
+                        principalTable: "LeaseAgreement",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InboxManagers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ManagerId = table.Column<int>(type: "int", nullable: false),
+                    LeaseAgreementId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InboxManagers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InboxManagers_LeaseAgreement_LeaseAgreementId",
+                        column: x => x.LeaseAgreementId,
+                        principalTable: "LeaseAgreement",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InboxManagers_Managers_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Managers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -478,6 +529,11 @@ namespace RealStats.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ContractFiles_LeaseAgreementId",
+                table: "ContractFiles",
+                column: "LeaseAgreementId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FeatureProperity_ProperitiesId",
                 table: "FeatureProperity",
                 column: "ProperitiesId");
@@ -486,6 +542,16 @@ namespace RealStats.Migrations
                 name: "IX_Image_ProperityId",
                 table: "Image",
                 column: "ProperityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboxManagers_LeaseAgreementId",
+                table: "InboxManagers",
+                column: "LeaseAgreementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboxManagers_ManagerId",
+                table: "InboxManagers",
+                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeaseAgreement_ManagerId",
@@ -563,10 +629,16 @@ namespace RealStats.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ContractFiles");
+
+            migrationBuilder.DropTable(
                 name: "FeatureProperity");
 
             migrationBuilder.DropTable(
                 name: "Image");
+
+            migrationBuilder.DropTable(
+                name: "InboxManagers");
 
             migrationBuilder.DropTable(
                 name: "Payment");
