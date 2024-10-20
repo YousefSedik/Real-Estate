@@ -1,0 +1,56 @@
+﻿@model IEnumerable<RealStats.Models.InboxManager>
+
+<div class="container mt-5">
+    <h2 class="text-center font-weight-bold">Inbox Manager Requests</h2>
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th> <!-- Counter column -->
+                <th>Type</th>
+                <th>Description</th>
+                <th>Property</th>
+                <th>Contract File</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No requests available.</td>
+                </tr>
+            }
+            else
+            {
+                int counter = 1; // Initialize counter for the row number
+                foreach (var request in Model)
+                {
+                    <tr>
+                        <td class="font-weight-bold">@counter</td> <!-- Display row number -->
+                        <td>@request.Type</td>
+                        <td>@request.Description</td>
+                        <td>
+                            <a class="btn btn-info btn-sm font-weight-bold" href="@Url.Action("Details", "Property", new { propertyId = request.LeaseAgreement.ProperityId })">View Property</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm font-weight-bold" href="@Url.Action("OpenContractFile", "InboxManager", new { id = request.LeaseAgreementId })">View Contract</a>
+                        </td>
+                        <td style="display:inline-flex">
+                            <!-- Action buttons placed side by side -->
+                            <form method="post" asp-action="Accept" asp-controller="InboxManager" class="d-inline">
+                                <input type="hidden" name="id" value="@request.Id" />
+                                <button type="submit" class="btn btn-success btn-sm font-weight-bold">Accept</button>
+                            </form>
+                            <form method="post" asp-action="Reject" asp-controller="InboxManager" class="d-inline">
+                                <input type="hidden" name="id" value="@request.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm font-weight-bold">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    counter++;
+                    <!-- Increment the counter -->
+                }
+            }
+        </tbody>
+    </table>
+</div>

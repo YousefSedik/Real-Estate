@@ -8,13 +8,16 @@ namespace RealStats.Models
     {
         public int Id { get; set; }
 
-        public bool LeaseStatus { get; set; }
+        public int LeaseStatus { get; set; } // 0>waiting , 1>active , 2>expired
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
         public int LeaseDuration { get; set; }
 
+        public string PersonalId { get; set; }
+
         public ICollection<Payment> Payments { get; set; }
+        public ICollection<ContractFile> Files { get; set; }
         public int ProperityId { get; set; }
         [ForeignKey("ProperityId")]
         public Properity Properity { get; set; }

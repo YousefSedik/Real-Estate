@@ -12,11 +12,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>GARO ESTATE | User properties Page</title>
     <meta name="description" content="GARO is a real-estate template">
-    <meta name="author" content="Kimarotec">
+    <meta name="author" content="HAKY">
     <meta name="keyword" content="html5, css, bootstrap, property, real-estate theme , bootstrap template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
     <!-- Place favicon.ico in the wwwroot directory -->
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
@@ -108,6 +110,11 @@
                                 <button class="navbar-btn nav-button wow fadeInRight" data-wow-delay="0.5s">Add Property</button>
                             </form>
 
+                            <!-- Inbox icon with link to open the inbox manager -->
+                            <a href="@Url.Action("Index", "InboxManager")" class="d-inline-block ms-2" title="Inbox Manager">
+                                <i class="fa fa-inbox fa-2x" aria-hidden="true" style="margin:15px; color:black"></i> <!-- Font Awesome Inbox Icon -->
+                            </a>
+
                         }
                         else
                         {
@@ -188,7 +195,7 @@
 
 
     <!-- Footer area-->
-    <div class="footer-area">
+    <div class="footer-area" style="margin-top:20px">
 
         <div class=" footer">
             <div class="container">
@@ -199,7 +206,7 @@
                             <h4>About us </h4>
                             <div class="footer-title-line"></div>
 
-                            <img src="~/assets/img/footer-logo.png" alt="" class="wow pulse" data-wow-delay="1s">
+                            <img src="~/assets/img/logo.png" alt="" class="wow pulse" data-wow-delay="1s">
                             <p>Lorem ipsum dolor cum necessitatibus su quisquam molestias. Vel unde, blanditiis.</p>
                             <ul class="footer-adress">
                                 <li><i class="pe-7s-map-marker strong"> </i> 9089 your adress her</li>

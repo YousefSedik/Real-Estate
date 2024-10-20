@@ -1,0 +1,134 @@
+﻿@model RealStats.ViewModel.ContractViewModel
+
+@{
+    ViewData["Title"] = "Lease Contract";
+}
+
+<style>
+    body {
+        font-size: 18px; /* Adjust this value for larger text */
+        font-weight: bold; /* Make text bold */
+    }
+
+    .contract-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    hr {
+        border: 1px solid #000; /* Line style */
+        margin: 20px 0; /* Space around the line */
+    }
+
+    .contract-signature {
+        margin-top: 40px;
+    }
+</style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div class="container my-5">
+    <div class="contract-section mb-4" id="PdfContainer">
+        <h1 class="text-center">Lease Agreement</h1>
+        <hr />
+        <h3 class="text-primary">1. Tenant Information</h3>
+        <p><strong>Name:</strong> @Model.TenantName</p>
+        <p><strong>Email:</strong> @Model.TenantEmail</p>
+        <p><strong>Phone:</strong> @Model.TenantPhone</p>
+        <p>
+            <strong>The Tenant:</strong> The Tenant agrees to comply with all terms and conditions set forth in this agreement.
+            The Tenant acknowledges that they have read and understood the lease terms, and will not engage in any activities that may disturb the peace of the property or violate the rights of other tenants.
+            The Tenant is responsible for ensuring that all guests adhere to the same rules and regulations outlined in this lease.
+        </p>
+        <hr />
+
+        <h3 class="text-primary">2. Manager Information</h3>
+        <p><strong>Name:</strong> @Model.ManagerName</p>
+        <p><strong>Email:</strong> @Model.ManagerEmail</p>
+        <p><strong>Phone:</strong> @Model.ManagerPhone</p>
+        <p>
+            <strong>The Manager:</strong> The Manager is responsible for overseeing the property and ensuring that the terms of this lease are upheld.
+            The Manager will communicate with the Tenant regarding any maintenance issues, property regulations, and other concerns.
+            The Tenant agrees to inform the Manager of any necessary repairs or complaints in a timely manner to ensure the proper management of the property.
+        </p>
+        <hr />
+
+        <h3 class="text-primary">3. Property Information</h3>
+        <p>
+            <strong>Property Address:</strong> @Model.Properity.Street, @Model.Properity.City, @Model.Properity.Country<br />
+            <strong>Description:</strong> @Model.Properity.Description<br />
+            <strong>Price:</strong> @Model.Properity.Price.ToString("C")<br />
+            <strong>The Premises:</strong> The Premises refers not only to the dwelling or grounds let in terms of this agreement, but also to any of the Landlord’s fixtures and fittings in/on the dwelling.
+            This includes, but is not limited to keys, locks, windows, electrical appliances, sanitary ware, sewage pipes, stoves, geysers, taps, and other fixtures of fittings specifically specified in this agreement.
+            The Tenant shall ensure that the Premises are kept in good condition and will report any damage or required maintenance to the Manager immediately.
+        </p>
+        <hr />
+
+        <h3 class="text-primary">4. Lease Agreement Details</h3>
+        <p><strong>Lease Duration:</strong> @Model.LeaseAgreement.LeaseDuration months</p>
+        <p><strong>Personal ID:</strong> @Model.LeaseAgreement.PersonalId</p>
+        <p><strong>Start Date:</strong> @Model.LeaseAgreement.StartDate.ToString("d")</p>
+        <p><strong>End Date:</strong> @Model.LeaseAgreement.EndDate.ToString("d")</p>
+        <p>
+            <strong>Lease Use:</strong> The Premises will only be used for private residential purposes, and the Tenant will not allow more than [insert number] people to stay on the Premises at any time, without obtaining written permission from the Landlord first.
+            Any unauthorized occupants may result in penalties as described in this agreement. The Tenant agrees to adhere to the lease duration and shall not vacate the Premises without proper notice as specified in the lease terms.
+        </p>
+        <hr />
+
+        <h3 class="text-primary">5. Terms and Conditions</h3>
+        <p>
+            <strong>Terms:</strong> @Model.TermsAndConditions.Terms<br />
+            <strong>Payment Terms:</strong> @Model.TermsAndConditions.PaymentTerms<br />
+            <strong>Penalty Clauses:</strong> @Model.TermsAndConditions.PenaltyClauses<br />
+            <strong>Maintenance Responsibility:</strong> @Model.TermsAndConditions.MaintenanceResponsibility<br />
+            <strong>Cancellation Policy:</strong> @Model.TermsAndConditions.CancellationPolicy<br />
+            <strong>Renewal Policy:</strong> @Model.TermsAndConditions.RenewalPolicy<br />
+            <strong>Insurance Requirements:</strong> @Model.TermsAndConditions.InsuranceRequirements<br />
+            <strong>Pets Policy:</strong> No animals, birds, or pets may be kept on the Premises, without written permission of the Landlord.
+            Any breach of this policy may result in immediate termination of the lease and penalties as outlined in the agreement.
+        </p>
+        <hr />
+
+        <h3 class="text-primary">Signatures</h3>
+        <p><strong>Tenant Signature:</strong> ______________________</p>
+        <p><strong>Date:</strong> ________________</p>
+        <p class="mt-4"><strong>Manager Signature:</strong> ______________________</p>
+        <p><strong>Date:</strong> ________________</p>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-success" id="BtnPdf" onclick="printSection()">Download PDF</button>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Home</a>
+    </div>
+
+    <!-- New Section for Uploading Signed Contract -->
+    <div class="upload-section mt-5">
+        <h3 class="text-center">Upload Signed Contract</h3>
+        <p class="text-center">Please download the contract, sign it, and then upload the signed document below.</p>
+
+        <form asp-controller="ContractRequest" asp-action="UploadSignedContract" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="signedContract">Upload Signed Contract (PDF only):</label>
+                <input type="file" name="signedContract" id="signedContract" class="form-control" accept=".pdf" required />
+                <input type="hidden" name="contractId" value="@Model.LeaseAgreement.Id"/>
+                <input type="hidden" name="ManagerId" value="@Model.LeaseAgreement.ManagerId"
+            </div>
+            <h3 class="text-center">Send Request to Manager</h3>
+            <p class="text-center">After uploading the signed document, you can send a request to the manager for review.</p>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Send request for Owner</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function printSection() {
+        // Save the original page content
+        var originalContent = document.body.innerHTML;
+        var printContent = document.getElementById('PdfContainer').innerHTML;
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+</script>

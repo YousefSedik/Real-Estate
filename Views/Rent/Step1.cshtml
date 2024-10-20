@@ -1,0 +1,45 @@
+﻿@model RealStats.ViewModel.TenantContractStep1ViewModel
+
+@{
+    ViewData["Title"] = "Create Contract - Step 1";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Welcome, @Model.TenantName  !</h2>
+            <p>We're excited to help you get started with your lease. Please fill out the form below to continue.</p>
+
+            <!-- Display validation summary for all errors -->
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <form asp-action="Step1" method="post">
+                <div class="form-group">
+                    <label for="leaseDuration">Lease Duration (in months)</label>
+                    <input type="number" class="form-control" id="leaseDuration" name="LeaseDuration" value="@Model.LeaseDuration" required>
+                    <!-- Validation message for LeaseDuration -->
+                    <span asp-validation-for="LeaseDuration" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="personalId">Your Personal ID</label>
+                    <input type="text" class="form-control" id="personalId" name="PersonalId" value="@Model.PersonalId" required>
+                    <!-- Validation message for PersonalId -->
+                    <span asp-validation-for="PersonalId" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" name="PropertyId" value="@Model.PropertyId" />
+                <input type="hidden" name="TenantId" value="@Model.TenantId" />
+                <input type="hidden" name="ManagerId" value="@Model.ManagerId" />
+                <button type="submit" class="btn btn-primary mt-4" style="margin : 10px">Next Step</button>
+            </form>
+        </div>
+        <div class="col-md-6 offset-md-3">
+            <img src="~/assets/img/key.jpg" class="img-fluid rounded mx-auto d-block shadow-lg mb-4" alt="Rent">
+        </div>
+    </div>
+</div>
+
+
+
+

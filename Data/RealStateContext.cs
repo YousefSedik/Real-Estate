@@ -35,6 +35,9 @@ namespace RealStats.Data
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<TermsAndConditions> TermsAndConditions { get; set; }
+        public DbSet<InboxManager> InboxManagers { get; set; }
+        public DbSet<ContractFile> ContractFiles { get; set; }
+
     }
-    
+
 }

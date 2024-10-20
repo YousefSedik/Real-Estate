@@ -67,8 +67,8 @@
 
                 <div class="single-property-wrapper">
                     <div class="single-property-header">
-                        @* <h1 class="property-title pull-left">@property.City</h1> *@
-                        @* <span class="property-price pull-right">$@property.Price</span> *@
+                          <h1 class="property-title pull-left">@property.City</h1>
+                        <span class="property-price pull-right">E£@property.Price</span>
                     </div>
 
                     <div class="property-meta entry-meta clearfix ">
@@ -194,6 +194,7 @@
                             </div>
                         </div>
                     </div>
+                    <a asp-controller="rent" asp-action="Step1" asp-route-PropertyId="@property.Id" class="btn btn-primary btn-md">Rent</a>
                 </aside>
             </div>
         </div>
