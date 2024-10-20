@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealStats.Data;
 
@@ -11,9 +12,11 @@ using RealStats.Data;
 namespace RealStats.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    partial class RealStateContextModelSnapshot : ModelSnapshot
+    [Migration("20241020075844_InboxManager")]
+    partial class InboxManager
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,35 +260,6 @@ namespace RealStats.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RealStats.Models.ContractFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LeaseAgreementId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeaseAgreementId");
-
-                    b.ToTable("ContractFiles");
-                });
-
             modelBuilder.Entity("RealStats.Models.Feature", b =>
                 {
                     b.Property<int>("Id")
@@ -338,6 +312,35 @@ namespace RealStats.Migrations
                             Id = 7,
                             Name = "Elevator Access"
                         });
+                });
+
+            modelBuilder.Entity("RealStats.Models.File", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LeaseAgreementId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaseAgreementId");
+
+                    b.ToTable("File");
                 });
 
             modelBuilder.Entity("RealStats.Models.Image", b =>
@@ -734,7 +737,7 @@ namespace RealStats.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RealStats.Models.ContractFile", b =>
+            modelBuilder.Entity("RealStats.Models.File", b =>
                 {
                     b.HasOne("RealStats.Models.LeaseAgreement", "LeaseAgreement")
                         .WithMany("Files")
