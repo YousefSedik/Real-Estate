@@ -1,10 +1,10 @@
-﻿using RealStats.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace RealStats.ViewModel
 {
     public class AddProperityModel
     {
+        public int PropertyId { get; set; }
         [Required, StringLength(150)]
         public string Name { get; set; }
         [Required, StringLength(int.MaxValue)]

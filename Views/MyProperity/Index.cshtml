@@ -64,7 +64,9 @@
                 {
                     <div class="col-md-4">
                         <div class="card property-card">
+                            <a href="@Url.Action("Details","Property",new { propertyId = property.Id})">
                             <img src="@Url.Content(!string.IsNullOrEmpty(property.Image) ? property.Image : "~/Uploads/default-image.jpg")" class="property-image" alt="Property Image" />
+                            </a>
                             <div class="card-body">
                                 <h5 class="card-title">@property.Name</h5>
                                 <div>

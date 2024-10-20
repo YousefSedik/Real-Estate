@@ -2,8 +2,12 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @inject UserManager<ApplicationUser> UserManager
 @{
-    // Get the current user
-    var user = await UserManager.GetUserAsync(User);
+    ApplicationUser user = null;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        user = await UserManager.GetUserAsync(User);
+    }
 }
 <!DOCTYPE html>
 <html class="no-js">
@@ -92,7 +96,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index" ><img src="~/assets/img/logo.png" alt=""></a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index" ><@* img src="~/assets/img/logo.png" alt="" *@></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -150,7 +154,9 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Manage<b class="caret"></b></a>
                                 <ul class="dropdown-menu navbar-nav">
                                     <li>
-                                        <a href="#">Your Properties</a>
+                                        <a href="@Url.Action("Index", "MyProperity")" class="btn btn-default" style="background-color: white; color: #f0ad4e; border-color: #f0ad4e;">
+                                            Manage Properties
+                                        </a>
                                     </li>
                                     <li>
                                         <a href="#">Your Profile</a>
@@ -164,7 +170,9 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Manage<b class="caret"></b></a>
                                 <ul class="dropdown-menu navbar-nav">
                                     <li>
-                                        <a href="#">Your Tenat Properties</a>
+                                        <a href="@Url.Action("Index", "MyProperity")" class="btn btn-default" style="background-color: white; color: #f0ad4e; border-color: #f0ad4e;">
+                                            Rented Properities
+                                        </a>
                                     </li>
                                     <li>
                                         <a href="#">Your bils</a>

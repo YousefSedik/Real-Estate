@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using RealStats.Data;
 using RealStats.Models;
 using RealStats.ViewModel;
 using System.Security.Claims;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using NuGet.Packaging;
 
 namespace RealStats.Controllers
 {
@@ -32,84 +28,84 @@ namespace RealStats.Controllers
         {
             if (ModelState.IsValid)
             {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var manager = _context.Managers.FirstOrDefault(m => m.UserId == userId);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var manager = _context.Managers.FirstOrDefault(m => m.UserId == userId);
 
-                    var property = new Properity
-                    {
-                        Name = model.Name,
-                        Country = model.Country,
-                        City = model.City,
-                        Street = model.Street,
-                        Area = model.Area,
-                        Description = model.Description,
-                        Bedrooms = model.Bedrooms,
-                        Bathrooms = model.Bathrooms,
-                        Garages = model.Garages,
-                        Price = model.Price,
-                        Status = true,
-                        manager = manager,
-                        Features = new List<Feature>(), // Initialize collections
-                        Images = new List<Image>()
-                    };
+                var property = new Properity
+                {
+                    Name = model.Name,
+                    Country = model.Country,
+                    City = model.City,
+                    Street = model.Street,
+                    Area = model.Area,
+                    Description = model.Description,
+                    Bedrooms = model.Bedrooms,
+                    Bathrooms = model.Bathrooms,
+                    Garages = model.Garages,
+                    Price = model.Price,
+                    Status = true,
+                    manager = manager,
+                    Features = new List<Feature>(), // Initialize collections
+                    Images = new List<Image>()
+                };
 
-                    // Adding selected features
-                    if (model.Features != null && model.Features.Count > 0)
+                // Adding selected features
+                if (model.Features != null && model.Features.Count > 0)
+                {
+                    var selectedFeatures = _context.Features.Where(f => model.Features.Contains(f.Id)).ToList();
+                    property.Features.AddRange(selectedFeatures);
+                }
+
+                // Handling image uploads
+                if (model.images != null && model.images.Length > 0)
+                {
+                    var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(imagesPath))
                     {
-                        var selectedFeatures = _context.Features.Where(f => model.Features.Contains(f.Id)).ToList();
-                        property.Features.AddRange(selectedFeatures);
+                        Directory.CreateDirectory(imagesPath);
                     }
 
-                    // Handling image uploads
-                    if (model.images != null && model.images.Length > 0)
+                    foreach (var image in model.images)
                     {
-                        var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                        if (!Directory.Exists(imagesPath))
+                        if (image.Length > 0)
                         {
-                            Directory.CreateDirectory(imagesPath);
-                        }
+                            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                            var imagePath = Path.Combine(imagesPath, uniqueFileName);
 
-                        foreach (var image in model.images)
-                        {
-                            if (image.Length > 0)
+                            using (var stream = new FileStream(imagePath, FileMode.Create))
                             {
-                                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                                var imagePath = Path.Combine(imagesPath, uniqueFileName);
-
-                                using (var stream = new FileStream(imagePath, FileMode.Create))
-                                {
-                                    image.CopyTo(stream);
-                                }
-
-                                var img = new Image
-                                {
-                                    ImageUrl = "/images/" + uniqueFileName,
-                                    Properity = property
-                                };
-                                property.Images.Add(img);
+                                image.CopyTo(stream);
                             }
+
+                            var img = new Image
+                            {
+                                ImageUrl = "/images/" + uniqueFileName,
+                                Properity = property
+                            };
+                            property.Images.Add(img);
                         }
                     }
+                }
 
-                    _context.Properities.Add(property);
-                    _context.SaveChanges();
+                _context.Properities.Add(property);
+                _context.SaveChanges();
 
-                    Console.WriteLine($"Properity ID: {property.Id}, Terms: {model.Terms}");
-                    // Adding Terms and Conditions
-                    var termsAndConditions = new TermsAndConditions
-                    {
-                        ProperityId = property.Id,
-                        Terms = model.Terms,
-                        PaymentTerms = model.PaymentTerms,
-                        PenaltyClauses = model.PenaltyClauses,
-                        MaintenanceResponsibility = model.MaintenanceResponsibility,
-                        CancellationPolicy = model.CancellationPolicy,
-                        RenewalPolicy = model.RenewalPolicy,
-                        InsuranceRequirements = model.InsuranceRequirements
-                    };
+                Console.WriteLine($"Properity ID: {property.Id}, Terms: {model.Terms}");
+                // Adding Terms and Conditions
+                var termsAndConditions = new TermsAndConditions
+                {
+                    ProperityId = property.Id,
+                    Terms = model.Terms,
+                    PaymentTerms = model.PaymentTerms,
+                    PenaltyClauses = model.PenaltyClauses,
+                    MaintenanceResponsibility = model.MaintenanceResponsibility,
+                    CancellationPolicy = model.CancellationPolicy,
+                    RenewalPolicy = model.RenewalPolicy,
+                    InsuranceRequirements = model.InsuranceRequirements
+                };
 
-                    _context.TermsAndConditions.Add(termsAndConditions);
-                    _context.SaveChanges();
+                _context.TermsAndConditions.Add(termsAndConditions);
+                _context.SaveChanges();
 
 
                 ViewBag.Message = "Form successfully submitted!";
@@ -118,9 +114,8 @@ namespace RealStats.Controllers
             {
                 ViewBag.Message = "There was an error with the form.";
             }
-
             ViewBag.Features = _context.Features.ToList(); // Ensure the features are available in the view
-            return View(model); // Pass the model back to the view in case of validation errors
+            return RedirectToAction("Index", "MyProperity"); // Pass the model back to the view in case of validation errors
         }
     }
 }
