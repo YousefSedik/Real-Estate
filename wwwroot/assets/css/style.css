@@ -3044,3 +3044,30 @@ padding: 10px;
 #map {
     height: 300px;
 }
+
+/* styles.css */
+
+.light-slide-item {
+    width: 100%; /* Adjust as needed */
+    overflow: hidden; /* Prevent overflow */
+}
+
+#image-gallery {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+    #image-gallery li {
+        display: inline-block; /* Align items in a row */
+        width: 100%; /* Set to the full width of the container */
+        height: 400px; /* Adjust the height as needed */
+        position: relative; /* Positioning for inner elements */
+    }
+
+    #image-gallery img {
+        width: 100%; /* Make image take the full width */
+        height: 100%; /* Make image take the full height */
+        object-fit: cover; /* Crop and cover the space */
+    }
+

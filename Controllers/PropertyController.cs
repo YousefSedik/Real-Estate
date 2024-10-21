@@ -39,7 +39,8 @@ public class PropertyController : Controller
         }
 
         var tenant = await _context.Tenant.FirstOrDefaultAsync(t => t.UserId == user.Id);
-    
+        var properties = await _context.Properities.Include(p => p.Images).ToListAsync();
+        ViewData["properties"] = properties;
         ViewData["property"] = property;
         ViewData["Images"] = property.Images?.ToList() ?? new List<Image>(); // Ensure not null
         ViewData["Features"] = property.Features?.ToList() ?? new List<Feature>(); // Ensure not null

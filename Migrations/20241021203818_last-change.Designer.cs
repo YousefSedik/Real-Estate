@@ -12,8 +12,8 @@ using RealStats.Data;
 namespace RealStats.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20241020183801_newMigration")]
-    partial class newMigration
+    [Migration("20241021203818_last-change")]
+    partial class lastchange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,21 +171,6 @@ namespace RealStats.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("ProperityTenant", b =>
-                {
-                    b.Property<int>("ProperityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TenantsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProperityId", "TenantsId");
-
-                    b.HasIndex("TenantsId");
-
-                    b.ToTable("ProperityTenant");
                 });
 
             modelBuilder.Entity("RealStats.Models.ApplicationUser", b =>
@@ -543,9 +528,14 @@ namespace RealStats.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ManagerId");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Properities");
                 });
@@ -722,21 +712,6 @@ namespace RealStats.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProperityTenant", b =>
-                {
-                    b.HasOne("RealStats.Models.Properity", null)
-                        .WithMany()
-                        .HasForeignKey("ProperityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RealStats.Models.Tenant", null)
-                        .WithMany()
-                        .HasForeignKey("TenantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RealStats.Models.ContractFile", b =>
                 {
                     b.HasOne("RealStats.Models.LeaseAgreement", "LeaseAgreement")
@@ -835,7 +810,13 @@ namespace RealStats.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RealStats.Models.Tenant", "tenant")
+                        .WithMany("Properity")
+                        .HasForeignKey("TenantId");
+
                     b.Navigation("manager");
+
+                    b.Navigation("tenant");
                 });
 
             modelBuilder.Entity("RealStats.Models.ReportIssue", b =>
@@ -910,6 +891,8 @@ namespace RealStats.Migrations
             modelBuilder.Entity("RealStats.Models.Tenant", b =>
                 {
                     b.Navigation("LeaseAgreement");
+
+                    b.Navigation("Properity");
 
                     b.Navigation("ReportIssue");
                 });

@@ -143,7 +143,7 @@ namespace RealStats.Controllers
             }
             _context.SaveChanges();
 
-            return Redirect($"/Properity/{ProperityId}"); ;
+            return Redirect($"/Property/Details?propertyId={ProperityId}"); ;
         }
 
         [HttpPost]
@@ -153,7 +153,6 @@ namespace RealStats.Controllers
             var property = _context.Properities
             .Include(p => p.TermsAndConditions)
             .Include(p => p.LeaseAgreements)
-            .Include(p => p.Tenants)
             .Include(p => p.ReportIssues)
             .Include(p => p.Features)
             .Include(p => p.Images)

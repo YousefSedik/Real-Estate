@@ -16,15 +16,15 @@ namespace RealStats.Data
             builder.Entity<ReportIssue>()
                 .Property(r => r.Id)
                 .ValueGeneratedOnAdd();
-            
+
             builder.Entity<Feature>().HasData(
-                new Feature {Id = 1 ,  Name = "Swimming Pool" },
-                new Feature {Id = 2 ,  Name = "Laundry Room"},
-                new Feature {Id = 3 ,  Name = "Emergency Exit"},
-                new Feature {Id = 4 ,  Name = "Fire Place"},
-                new Feature {Id = 5 ,  Name = "Garden"},
-                new Feature {Id = 6 ,  Name = "Smart Home"},
-                new Feature {Id = 7 ,  Name = "Elevator Access" }
+                new Feature { Id = 1, Name = "Swimming Pool" },
+                new Feature { Id = 2, Name = "Laundry Room" },
+                new Feature { Id = 3, Name = "Emergency Exit" },
+                new Feature { Id = 4, Name = "Fire Place" },
+                new Feature { Id = 5, Name = "Garden" },
+                new Feature { Id = 6, Name = "Smart Home" },
+                new Feature { Id = 7, Name = "Elevator Access" }
             );
         }
         public DbSet<Manager> Managers { get; set; }
@@ -37,7 +37,7 @@ namespace RealStats.Data
         public DbSet<TermsAndConditions> TermsAndConditions { get; set; }
         public DbSet<InboxManager> InboxManagers { get; set; }
         public DbSet<ContractFile> ContractFiles { get; set; }
-
+        public DbSet<InboxTenant> InboxTenant { get; set; }
     }
 
 }

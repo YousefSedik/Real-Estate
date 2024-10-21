@@ -12,7 +12,7 @@ using RealStats.Data;
 namespace RealStats.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20241019130241_Initial_Migration")]
+    [Migration("20241021202200_Initial_Migration")]
     partial class Initial_Migration
     {
         /// <inheritdoc />
@@ -173,21 +173,6 @@ namespace RealStats.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProperityTenant", b =>
-                {
-                    b.Property<int>("ProperityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TenantsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProperityId", "TenantsId");
-
-                    b.HasIndex("TenantsId");
-
-                    b.ToTable("ProperityTenant");
-                });
-
             modelBuilder.Entity("RealStats.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -258,6 +243,35 @@ namespace RealStats.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("RealStats.Models.ContractFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LeaseAgreementId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaseAgreementId");
+
+                    b.ToTable("ContractFiles");
                 });
 
             modelBuilder.Entity("RealStats.Models.Feature", b =>
@@ -336,6 +350,37 @@ namespace RealStats.Migrations
                     b.ToTable("Image");
                 });
 
+            modelBuilder.Entity("RealStats.Models.InboxManager", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LeaseAgreementId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaseAgreementId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("InboxManagers");
+                });
+
             modelBuilder.Entity("RealStats.Models.LeaseAgreement", b =>
                 {
                     b.Property<int>("Id")
@@ -350,11 +395,15 @@ namespace RealStats.Migrations
                     b.Property<int>("LeaseDuration")
                         .HasColumnType("int");
 
-                    b.Property<bool>("LeaseStatus")
-                        .HasColumnType("bit");
+                    b.Property<int>("LeaseStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("ManagerId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PersonalId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProperityId")
                         .HasColumnType("int");
@@ -479,9 +528,14 @@ namespace RealStats.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ManagerId");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Properities");
                 });
@@ -658,19 +712,15 @@ namespace RealStats.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProperityTenant", b =>
+            modelBuilder.Entity("RealStats.Models.ContractFile", b =>
                 {
-                    b.HasOne("RealStats.Models.Properity", null)
-                        .WithMany()
-                        .HasForeignKey("ProperityId")
+                    b.HasOne("RealStats.Models.LeaseAgreement", "LeaseAgreement")
+                        .WithMany("Files")
+                        .HasForeignKey("LeaseAgreementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealStats.Models.Tenant", null)
-                        .WithMany()
-                        .HasForeignKey("TenantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("LeaseAgreement");
                 });
 
             modelBuilder.Entity("RealStats.Models.Image", b =>
@@ -682,6 +732,25 @@ namespace RealStats.Migrations
                         .IsRequired();
 
                     b.Navigation("Properity");
+                });
+
+            modelBuilder.Entity("RealStats.Models.InboxManager", b =>
+                {
+                    b.HasOne("RealStats.Models.LeaseAgreement", "LeaseAgreement")
+                        .WithMany()
+                        .HasForeignKey("LeaseAgreementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealStats.Models.Manager", "Manager")
+                        .WithMany("InboxManagers")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LeaseAgreement");
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("RealStats.Models.LeaseAgreement", b =>
@@ -741,7 +810,15 @@ namespace RealStats.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RealStats.Models.Tenant", "tenant")
+                        .WithMany("Properity")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("manager");
+
+                    b.Navigation("tenant");
                 });
 
             modelBuilder.Entity("RealStats.Models.ReportIssue", b =>
@@ -787,11 +864,15 @@ namespace RealStats.Migrations
 
             modelBuilder.Entity("RealStats.Models.LeaseAgreement", b =>
                 {
+                    b.Navigation("Files");
+
                     b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("RealStats.Models.Manager", b =>
                 {
+                    b.Navigation("InboxManagers");
+
                     b.Navigation("LeaseAgreements");
 
                     b.Navigation("Properities");
@@ -812,6 +893,8 @@ namespace RealStats.Migrations
             modelBuilder.Entity("RealStats.Models.Tenant", b =>
                 {
                     b.Navigation("LeaseAgreement");
+
+                    b.Navigation("Properity");
 
                     b.Navigation("ReportIssue");
                 });

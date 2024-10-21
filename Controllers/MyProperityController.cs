@@ -44,7 +44,8 @@ namespace RealStats.Controllers
                     {
                         Id = p.Id,
                         Name = p.Name,
-                        Image = p.Images.FirstOrDefault().ImageUrl
+                        Image = p.Images.FirstOrDefault().ImageUrl,
+                        status = p.Status
                     })
                     .ToListAsync();
 
@@ -68,7 +69,7 @@ namespace RealStats.Controllers
                 var properties = await _context.Properities
                     .Include(p => p.Images)
                     .Include(p => p.LeaseAgreements)
-                    .Where(p => p.Tenants.Any(t => t.Id == tenant.Id))
+                    .Where(p => p.TenantId == tenant.Id)
                     .Select(p => new MyProperityViewModel
                     {
                         Id = p.Id,

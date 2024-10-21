@@ -72,14 +72,23 @@
                                 <div>
                                     @if (user.IsManager)
                                     {
-                                        <a href="@Url.Action("Edit", "EditProperity", new { id = property.Id })" class="btn btn-success btn-block">
-                                            <i class="glyphicon glyphicon-edit"></i> Edit
-                                        </a>
-                                        <form action="@Url.Action("Delete", "EditProperity", new { propertyId = property.Id })" method="post" onsubmit="return confirm('Are you sure you want to delete this property?');">
-                                            <button type="submit" class="btn btn-danger btn-block">
-                                                <i class="glyphicon glyphicon-trash"></i> Delete
-                                            </button>
-                                        </form>
+                                        if (property.status == true)
+                                        {
+                                            <a href="@Url.Action("Edit", "EditProperity", new { id = property.Id })" class="btn btn-success btn-block">
+                                                <i class="glyphicon glyphicon-edit"></i> Edit
+                                            </a>
+                                            <form action="@Url.Action("Delete", "EditProperity", new { propertyId = property.Id })" method="post" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                                                <button type="submit" class="btn btn-danger btn-block">
+                                                    <i class="glyphicon glyphicon-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <a href="" class="btn btn-secondary btn-block" style="background-color: gray; color: white;">
+                                                <i class="glyphicon glyphicon-edit"></i> Rented
+                                            </a>
+                                        }
                                     }
                                     else
                                     {
@@ -101,7 +110,7 @@
             {
                 <div class="col-md-12">
                     <div class="alert alert-warning text-center">
-                        No properties found for this manager.
+                        No properties found.
                     </div>
                 </div>
             }

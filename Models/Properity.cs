@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RealStats.Models
@@ -23,7 +21,7 @@ namespace RealStats.Models
         [Required]
         public int Area { get; set; }
 
-        [MaxLength(int.MaxValue), Required] 
+        [MaxLength(int.MaxValue), Required]
         public string Description { get; set; }
 
         [Required]
@@ -42,13 +40,15 @@ namespace RealStats.Models
         [ForeignKey("ManagerId")]
         public Manager manager { get; set; }
 
+        public int? TenantId { get; set; }
+        [ForeignKey("TenantId")]
+        public Tenant tenant { get; set; }
         public TermsAndConditions TermsAndConditions { get; set; }
 
-        public ICollection<LeaseAgreement> LeaseAgreements { get; set; }    
-        public ICollection<Tenant> Tenants { get; set; }
+        public ICollection<LeaseAgreement> LeaseAgreements { get; set; }
 
-        public ICollection<ReportIssue> ReportIssues { get; set; }  
-        public ICollection<Feature> Features   { get; set; }
+        public ICollection<ReportIssue> ReportIssues { get; set; }
+        public ICollection<Feature> Features { get; set; }
         public ICollection<Image> Images { get; set; }
 
     }

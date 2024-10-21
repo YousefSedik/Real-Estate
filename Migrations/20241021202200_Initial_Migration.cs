@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RealStats.Migrations
 {
     /// <inheritdoc />
-    public partial class newMigration : Migration
+    public partial class Initial_Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -228,7 +227,8 @@ namespace RealStats.Migrations
                     Garages = table.Column<long>(type: "bigint", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    ManagerId = table.Column<int>(type: "int", nullable: false)
+                    ManagerId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -239,6 +239,12 @@ namespace RealStats.Migrations
                         principalTable: "Managers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Properities_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -318,30 +324,6 @@ namespace RealStats.Migrations
                     table.ForeignKey(
                         name: "FK_LeaseAgreement_Tenant_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "Tenant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProperityTenant",
-                columns: table => new
-                {
-                    ProperityId = table.Column<int>(type: "int", nullable: false),
-                    TenantsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProperityTenant", x => new { x.ProperityId, x.TenantsId });
-                    table.ForeignKey(
-                        name: "FK_ProperityTenant_Properities_ProperityId",
-                        column: x => x.ProperityId,
-                        principalTable: "Properities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProperityTenant_Tenant_TenantsId",
-                        column: x => x.TenantsId,
                         principalTable: "Tenant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
@@ -584,9 +566,9 @@ namespace RealStats.Migrations
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProperityTenant_TenantsId",
-                table: "ProperityTenant",
-                column: "TenantsId");
+                name: "IX_Properities_TenantId",
+                table: "Properities",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReportIssues_ProperityId",
@@ -644,9 +626,6 @@ namespace RealStats.Migrations
                 name: "Payment");
 
             migrationBuilder.DropTable(
-                name: "ProperityTenant");
-
-            migrationBuilder.DropTable(
                 name: "ReportIssues");
 
             migrationBuilder.DropTable(
@@ -665,10 +644,10 @@ namespace RealStats.Migrations
                 name: "Properities");
 
             migrationBuilder.DropTable(
-                name: "Tenant");
+                name: "Managers");
 
             migrationBuilder.DropTable(
-                name: "Managers");
+                name: "Tenant");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
