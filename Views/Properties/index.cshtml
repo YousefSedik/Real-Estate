@@ -63,13 +63,13 @@
                             <div class="col-sm-6 col-md-4 p0">
                                 <div class="box-two proerty-item">
                                     <div class="item-thumb">
-                                        <a href="@Url.Action("Details", new { id = property.Id })" >
+                                        <a href="@Url.Action("Details","property", new { propertyId = property.Id })" >
                                             <img src="@(property.Images.FirstOrDefault()?.ImageUrl ?? "/assets/img/demo/property-3.jpg")">
                                         </a>
                                     </div>
 
                                     <div class="item-entry overflow">
-                                        <h5><a href="@Url.Action("Details", new { id = property.Id })"> @property.Name </a></h5>
+                                        <h5><a href="@Url.Action("Details","property", new { propertyId = property.Id })"> @property.Name </a></h5>
                                         <div class="dot-hr"></div>
                                         <span class="pull-left"><b> Area :</b> @property.Area m² </span>
                                         <span class="proerty-price pull-right"> $ @property.Price</span>
