@@ -1,6 +1,4 @@
-@model X.PagedList.IPagedList<RealStats.Models.Properity>
-@using X.PagedList.Mvc.Core
-@using X.PagedList
+@model IEnumerable<RealStats.Models.Properity>
 
 @{
     ViewData["Title"] = "Properties";
@@ -13,18 +11,8 @@
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <form asp-action="Index" method="get">
-                <div class="input-group">
-                    <input type="text" name="searchString" class="form-control" placeholder="Search properties...">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6 text-right">
+    <div class="row">
+        <div class="col-md-12 mb-3">
             <a asp-action="Create" class="btn btn-primary">Add New Property</a>
         </div>
     </div>
@@ -50,14 +38,4 @@
             </div>
         }
     </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = Context.Request.Query["searchString"] }), new X.PagedList.Mvc.Core.PagedListRenderOptions
-            {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" }
-            })
-        </div>
-    </div>    </div>
 </div>
