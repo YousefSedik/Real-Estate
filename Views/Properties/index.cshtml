@@ -1,0 +1,116 @@
+@model IEnumerable<RealStats.Models.Properity>
+
+@{
+    ViewData["Title"] = "Properties";
+}
+
+<div class="page-head"> 
+    <div class="container">
+        <div class="row">
+            <div class="page-head-content">
+                <h1 class="page-title">List of Properties</h1>               
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="properties-area recent-property" style="background-color: #FFF;">
+    <div class="container">  
+        <div class="row">
+            <div class="col-md-3 p0 padding-top-40">
+                <div class="blog-asside-right pr0">
+                    <div class="panel panel-default sidebar-menu wow fadeInRight animated" >
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Smart search</h3>
+                        </div>
+                        <div class="panel-body search-widget">
+                            <form action="" class=" form-inline"> 
+                                <!-- Copy the form fields from properties.html here -->
+                                <!-- Include all the input fields, selects, and sliders -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 pr0 padding-top-40 properties-page">
+                <div class="col-md-12 clear"> 
+                    <div class="col-xs-10 page-subheader sorting pl0">
+                        <ul class="sort-by-list">
+                            <li class="active">
+                                <a href="javascript:void(0);" class="order_by_date" data-orderby="property_date" data-order="ASC">
+                                    Property Date <i class="fa fa-sort-amount-asc"></i>					
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="javascript:void(0);" class="order_by_price" data-orderby="property_price" data-order="DESC">
+                                    Property Price <i class="fa fa-sort-numeric-desc"></i>						
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-2 layout-switcher">
+                        <a class="layout-list" href="javascript:void(0);"> <i class="fa fa-th-list"></i>  </a>
+                        <a class="layout-grid active" href="javascript:void(0);"> <i class="fa fa-th"></i> </a>                          
+                    </div>
+                </div>
+
+                <div class="col-md-12 clear"> 
+                    <div id="list-type" class="proerty-th">
+                        @foreach (var property in Model)
+                        {
+                            <div class="col-sm-6 col-md-4 p0">
+                                <div class="box-two proerty-item">
+                                    <div class="item-thumb">
+                                        <a href="@Url.Action("Details","property", new { propertyId = property.Id })" >
+                                            <img src="@(property.Images.FirstOrDefault()?.ImageUrl ?? "/assets/img/demo/property-3.jpg")">
+                                        </a>
+                                    </div>
+
+                                    <div class="item-entry overflow">
+                                        <h5><a href="@Url.Action("Details","property", new { propertyId = property.Id })"> @property.Name </a></h5>
+                                        <div class="dot-hr"></div>
+                                        <span class="pull-left"><b> Area :</b> @property.Area m² </span>
+                                        <span class="proerty-price pull-right"> $ @property.Price</span>
+                                        <p style="display: none;">@property.Description</p>
+                                        <div class="property-icon">
+                                            <img src="/assets/img/icon/bed.png">(@property.Bedrooms)|
+                                            <img src="/assets/img/icon/shawer.png">(@property.Bathrooms)|
+                                            <img src="/assets/img/icon/cars.png">(@property.Garages)  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        }
+                    </div>
+                </div>
+                
+                <div class="col-md-12"> 
+                    <div class="pull-right">
+                        <div class="pagination">
+                            <ul>
+                                @if (ViewBag.CurrentPage > 1)
+                                {
+                                    <li><a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })">Prev</a></li>
+                                }
+
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+                                        <a href="@Url.Action("Index", new { page = i })">@i</a>
+                                    </li>
+                                }
+
+                                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                {
+                                    <li><a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })">Next</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>                
+                </div>
+            </div>  
+        </div>              
+    </div>
+</div>
