@@ -1,0 +1,63 @@
+@model X.PagedList.IPagedList<RealStats.Models.Properity>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Properties";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mt-4 mb-4">Properties</h2>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <form asp-action="Index" method="get">
+                <div class="input-group">
+                    <input type="text" name="searchString" class="form-control" placeholder="Search properties...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 text-right">
+            <a asp-action="Create" class="btn btn-primary">Add New Property</a>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var property in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@(property.Images.FirstOrDefault()?.ImageUrl ?? "/images/default-property.jpg")" class="card-img-top" alt="@property.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@property.Name</h5>
+                        <p class="card-text">@property.Description.Substring(0, Math.Min(property.Description.Length, 100))...</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Price:</strong> $@property.Price</li>
+                        <li class="list-group-item"><strong>Address:</strong> @property.Street, @property.City, @property.Country</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@property.Id" class="btn btn-info">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = Context.Request.Query["searchString"] }), new X.PagedList.Mvc.Core.PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            })
+        </div>
+    </div>    </div>
+</div>
