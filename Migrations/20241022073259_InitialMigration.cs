@@ -442,7 +442,8 @@ namespace RealStats.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false),
-                    LeaseAgreementId = table.Column<int>(type: "int", nullable: false)
+                    LeaseAgreementId = table.Column<int>(type: "int", nullable: true),
+                    PropertyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -451,6 +452,11 @@ namespace RealStats.Migrations
                         name: "FK_InboxTenant_LeaseAgreement_LeaseAgreementId",
                         column: x => x.LeaseAgreementId,
                         principalTable: "LeaseAgreement",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_InboxTenant_Properities_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -567,6 +573,11 @@ namespace RealStats.Migrations
                 name: "IX_InboxTenant_LeaseAgreementId",
                 table: "InboxTenant",
                 column: "LeaseAgreementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboxTenant_PropertyId",
+                table: "InboxTenant",
+                column: "PropertyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InboxTenant_TenantId",

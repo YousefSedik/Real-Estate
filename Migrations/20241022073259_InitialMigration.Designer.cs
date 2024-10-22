@@ -12,8 +12,8 @@ using RealStats.Data;
 namespace RealStats.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20241021234437_AddNullToLeaseAgreementInTenantInBox")]
-    partial class AddNullToLeaseAgreementInTenantInBox
+    [Migration("20241022073259_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -796,7 +796,7 @@ namespace RealStats.Migrations
                         .HasForeignKey("LeaseAgreementId");
 
                     b.HasOne("RealStats.Models.Properity", "Property")
-                        .WithMany("InboxTenants")
+                        .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -940,8 +940,6 @@ namespace RealStats.Migrations
             modelBuilder.Entity("RealStats.Models.Properity", b =>
                 {
                     b.Navigation("Images");
-
-                    b.Navigation("InboxTenants");
 
                     b.Navigation("LeaseAgreements");
 

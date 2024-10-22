@@ -793,7 +793,7 @@ namespace RealStats.Migrations
                         .HasForeignKey("LeaseAgreementId");
 
                     b.HasOne("RealStats.Models.Properity", "Property")
-                        .WithMany("InboxTenants")
+                        .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -937,8 +937,6 @@ namespace RealStats.Migrations
             modelBuilder.Entity("RealStats.Models.Properity", b =>
                 {
                     b.Navigation("Images");
-
-                    b.Navigation("InboxTenants");
 
                     b.Navigation("LeaseAgreements");
 

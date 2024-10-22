@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealStats.Data;
@@ -14,47 +15,57 @@ namespace RealStats.Controllers
         {
             _context = context;
         }
-          public async Task<IActionResult> Index(int page = 1, int pageSize = 9, string keyword = null, string city = null, string status = null, decimal? minPrice = null, decimal? maxPrice = null, int? minBeds = null, int? minBaths = null)
-          {
-              var query = _context.Properities
-                  .Include(p => p.Images)
-                  .Include(p => p.manager)
-                  .AsQueryable();
 
-              if (!string.IsNullOrEmpty(keyword))
-                  query = query.Where(p => p.Name.Contains(keyword) || p.Description.Contains(keyword));
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 9, string orderBy = "property_date", string order = "ASC", string keyword = null, string city = null, decimal? minPrice = null, decimal? maxPrice = null, int? minBedrooms = null, int? minBathrooms = null)
+        {
+            var query = _context.Properities
+                .Include(p => p.Images)
+                .Include(p => p.manager)
+                .AsQueryable();
 
-              if (!string.IsNullOrEmpty(city))
-                  query = query.Where(p => p.City == city);
+            if (!string.IsNullOrEmpty(keyword))
+                query = query.Where(p => p.Name.Contains(keyword) || p.Description.Contains(keyword));
 
-              if (!string.IsNullOrEmpty(status))
-                  query = query.Where(p => p.Status.ToString() == status);
+            if (!string.IsNullOrEmpty(city))
+                query = query.Where(p => p.City.Contains(city));
 
-              if (minPrice.HasValue)
-                  query = query.Where(p => p.Price >= (double)minPrice.Value);
+            if (minPrice.HasValue)
+                query = query.Where(p => (decimal)p.Price >= minPrice.Value);
 
-              if (maxPrice.HasValue)
-                  query = query.Where(p => p.Price <= (double)maxPrice.Value);
+            if (maxPrice.HasValue)
+                query = query.Where(p => (decimal)p.Price <= maxPrice.Value);
 
-              if (minBeds.HasValue)
-                  query = query.Where(p => p.Bedrooms >= minBeds.Value);
+            if (minBedrooms.HasValue)
+                query = query.Where(p => p.Bedrooms >= minBedrooms.Value);
 
-              if (minBaths.HasValue)
-                  query = query.Where(p => p.Bathrooms >= minBaths.Value);
+            if (minBathrooms.HasValue)
+                query = query.Where(p => p.Bathrooms >= minBathrooms.Value);
 
-              var totalProperties = await query.CountAsync();
-              var totalPages = (int)Math.Ceiling(totalProperties / (double)pageSize);
+            switch (orderBy)
+            {
+                case "property_date":
+                    query = order == "ASC" ? query.OrderBy(p => p.Id) : query.OrderByDescending(p => p.Id);
+                    break;
+                case "property_price":
+                    query = order == "ASC" ? query.OrderBy(p => p.Price) : query.OrderByDescending(p => p.Price);
+                    break;
+            }
 
-              var properties = await query
-                  .Skip((page - 1) * pageSize)
-                  .Take(pageSize)
-                  .ToListAsync();
+            var totalProperties = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalProperties / pageSize);
 
-              ViewBag.CurrentPage = page;
-              ViewBag.TotalPages = totalPages;
+            var properties = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
-              return View(properties);
-          }
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.OrderBy = orderBy;
+            ViewBag.Order = order;
+
+            return View(properties);
+        }
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -75,7 +86,5 @@ namespace RealStats.Controllers
 
             return View(property);
         }
-
-        // Add Create, Edit, and Delete actions as needed
     }
 }
