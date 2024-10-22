@@ -92,7 +92,7 @@
                                     }
                                     else
                                     {
-                                        <a href="@Url.Action("Payment", "EditProperity", new { leaseAgreementId = property.LeaseAgreementId })" class="btn btn-primary btn-block">
+                                        <a href="@Url.Action("Index","Payment" ,  new { leaseAgreementId = property.LeaseAgreementId })" class="btn btn-primary btn-block">
                                             <i class="glyphicon glyphicon-edit"></i> Pay Bill
                                         </a>
                                         <a href="@Url.Action("Create", "ReportIssue", new { property_id = property.Id })" class="btn btn-secondary btn-block" style="background-color: gray; color: white;">

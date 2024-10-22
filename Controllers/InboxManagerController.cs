@@ -32,6 +32,7 @@ namespace RealStats.Controllers
                 .ThenInclude(l => l.Files)
                 .ToList();
 
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
             return View(inboxRequests);
         }
 

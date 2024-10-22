@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RealStats.Data;
 using RealStats.Models;
 using System;
@@ -71,11 +72,7 @@ public class ContractRequestController : Controller
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "The signed contract has been uploaded and the manager has been notified.";
-        return RedirectToAction("SuccessPage");
+        return RedirectToAction("Details", "Property",new { propertyId = leaseAgreement.ProperityId});
 
-    }
-    public IActionResult SuccessPage()
-    {
-        return View();
     }
 }

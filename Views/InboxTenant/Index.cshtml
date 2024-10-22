@@ -1,0 +1,52 @@
+﻿@model IEnumerable<RealStats.Models.InboxTenant>
+
+<div class="container mt-5">
+    <h2 class="text-center font-weight-bold">Inbox Tenant Requests</h2>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Property</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No requests available.</td>
+                </tr>
+            }
+            else
+            {
+                int counter = 1;
+                foreach (var request in Model)
+                {
+                    <tr>
+                        <td class="font-weight-bold">@counter</td>
+                        @if (request.Type == "Accepted")
+                        {
+                            <td><i class="fa-solid fa-check fa-2x text-success"></i></td>
+                        }
+                        else
+                        {
+                            <td><i class="fa-solid fa-x fa-2x text-danger"></i></td>
+                        }
+                        <td>@request.Description</td>
+                        <td>
+                            <a class="btn btn-info btn-sm font-weight-bold" href="@Url.Action("Details", "Property", new { propertyId = request.PropertyId })">View Property</a>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

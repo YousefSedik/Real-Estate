@@ -16,10 +16,10 @@ public class PaymentController: Controller
     {
         _context = context;
         _userManager = userManager;
-    } 
-    
-    
-    [Authorize, Route("Payment/{leaseAgreementId:int}")]
+    }
+
+
+    [Authorize]
     public async Task<IActionResult> Index(int leaseAgreementId)
     {
         var user = await _userManager.GetUserAsync(User);

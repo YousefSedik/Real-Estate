@@ -2,10 +2,16 @@
 
 <div class="container mt-5">
     <h2 class="text-center font-weight-bold">Inbox Manager Requests</h2>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
     <table class="table table-bordered table-striped table-hover">
         <thead class="thead-dark">
             <tr>
-                <th>#</th> <!-- Counter column -->
+                <th>#</th>
                 <th>Type</th>
                 <th>Description</th>
                 <th>Property</th>
@@ -22,11 +28,11 @@
             }
             else
             {
-                int counter = 1; // Initialize counter for the row number
+                int counter = 1; 
                 foreach (var request in Model)
                 {
                     <tr>
-                        <td class="font-weight-bold">@counter</td> <!-- Display row number -->
+                        <td class="font-weight-bold">@counter</td> 
                         <td>@request.Type</td>
                         <td>@request.Description</td>
                         <td>
@@ -37,18 +43,17 @@
                         </td>
                         <td style="display:inline-flex">
                             <!-- Action buttons placed side by side -->
-                            <form method="post" asp-action="Accept" asp-controller="InboxManager" class="d-inline">
-                                <input type="hidden" name="id" value="@request.Id" />
-                                <button type="submit" class="btn btn-success btn-sm font-weight-bold">Accept</button>
+                            <form method="post" asp-action="Accept" asp-controller="AgreementContract" class="d-inline">
+                                <input type="hidden" name="LeaseAgreementId" value="@request.LeaseAgreementId" />
+                                <button type="submit" class="btn btn-success btn-sm font-weight-bold" style="margin-right:10px;">Accept</button>
                             </form>
-                            <form method="post" asp-action="Reject" asp-controller="InboxManager" class="d-inline">
-                                <input type="hidden" name="id" value="@request.Id" />
+                            <form method="post" asp-action="Reject" asp-controller="AgreementContract" class="d-inline">
+                                <input type="hidden" name="LeaseAgreementId" value="@request.LeaseAgreementId" />
                                 <button type="submit" class="btn btn-danger btn-sm font-weight-bold">Reject</button>
                             </form>
                         </td>
                     </tr>
                     counter++;
-                    <!-- Increment the counter -->
                 }
             }
         </tbody>

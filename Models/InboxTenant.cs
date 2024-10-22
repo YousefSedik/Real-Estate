@@ -14,8 +14,11 @@ namespace RealStats.Models
         public int TenantId { get; set; }
         [ForeignKey("TenantId")]
         public Tenant tenant { get; set; }
-        public int LeaseAgreementId { get; set; }
+        public int? LeaseAgreementId { get; set; }
         [ForeignKey("LeaseAgreementId")]
         public LeaseAgreement LeaseAgreement { get; set; }
+        public int PropertyId { get; set; }
+        [ForeignKey("PropertyId")]
+        public Properity Property { get; set; }
     }
 }

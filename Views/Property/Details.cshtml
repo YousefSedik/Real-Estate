@@ -3,7 +3,12 @@
     var properties = ViewData["properties"] as List<RealStats.Models.Properity>;
     var limitedProperties = properties?.Take(6).ToList(); // Limit to 5 properties
 }
-
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
 
 <div class="page-head">
     <div class="container">
@@ -240,10 +245,26 @@
                         </div>
                     </div>
                 </aside>
-                    @if (User.Identity.IsAuthenticated)
+                <div class="col-12">
+                    @if (User.Identity.IsAuthenticated && !(ViewData["IsManager"] as bool? ?? false))
                     {
-                        <a asp-controller="rent" asp-action="Step1" asp-route-PropertyId="@property.Id" class="btn btn-primary btn-md">Rent</a>
+                        if ((ViewData["Status"] as bool? ?? true))
+                        {
+                            <a asp-controller="rent" asp-action="Step1" asp-route-PropertyId="@property.Id"
+                               class="btn btn-primary btn-md btn-block"
+                               style="border-radius:10px; margin-top:10px">
+                                Rent
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="card-body">
+                                <h5 class="card-title">Current Status</h5>
+                                <p class="card-text">This property is currently rented and will be available on <strong>@ViewData["EndDate"]</strong>.</p>
+                            </div>
+                        }
                     }
+                </div>
             </div>
         </div>
 

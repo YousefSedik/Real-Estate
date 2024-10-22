@@ -5,28 +5,28 @@
 namespace RealStats.Migrations
 {
     /// <inheritdoc />
-    public partial class lastchange : Migration
+    public partial class AddNullToLeaseAgreementInTenantInBox : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Properities_Tenant_TenantId",
-                table: "Properities");
+                name: "FK_InboxTenant_LeaseAgreement_LeaseAgreementId",
+                table: "InboxTenant");
 
             migrationBuilder.AlterColumn<int>(
-                name: "TenantId",
-                table: "Properities",
+                name: "LeaseAgreementId",
+                table: "InboxTenant",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Properities_Tenant_TenantId",
-                table: "Properities",
-                column: "TenantId",
-                principalTable: "Tenant",
+                name: "FK_InboxTenant_LeaseAgreement_LeaseAgreementId",
+                table: "InboxTenant",
+                column: "LeaseAgreementId",
+                principalTable: "LeaseAgreement",
                 principalColumn: "Id");
         }
 
@@ -34,12 +34,12 @@ namespace RealStats.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Properities_Tenant_TenantId",
-                table: "Properities");
+                name: "FK_InboxTenant_LeaseAgreement_LeaseAgreementId",
+                table: "InboxTenant");
 
             migrationBuilder.AlterColumn<int>(
-                name: "TenantId",
-                table: "Properities",
+                name: "LeaseAgreementId",
+                table: "InboxTenant",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,
@@ -48,10 +48,10 @@ namespace RealStats.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Properities_Tenant_TenantId",
-                table: "Properities",
-                column: "TenantId",
-                principalTable: "Tenant",
+                name: "FK_InboxTenant_LeaseAgreement_LeaseAgreementId",
+                table: "InboxTenant",
+                column: "LeaseAgreementId",
+                principalTable: "LeaseAgreement",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
