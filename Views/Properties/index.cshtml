@@ -1,4 +1,4 @@
-@model IEnumerable<RealStats.Models.Properity>
+@model SearchViewModel
 
 @{
     ViewData["Title"] = "Properties";
@@ -24,11 +24,11 @@
                             <h3 class="panel-title">Smart search</h3>
                         </div>
                         <div class="panel-body search-widget">
-                            <form action="" class=" form-inline"> 
+                            <form action="/Properties" class=" form-inline" method="get">
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" placeholder="Key word">
+                                            <input type="text" class="form-control" placeholder="Key word" name="keyword">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -36,21 +36,20 @@
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select Your City">
-                                                <option>New york, CA</option>
-                                                <option>Paris</option>
-                                                <option>Casablanca</option>
-                                                <option>Tokyo</option>
-                                                <option>Marrakech</option>
-                                                <option>kyoto , shibua</option>
+                                            <select name="city" title="Select Your City" class="form-control">
+                                                <option value="" disabled selected hidden>Select Your City</option> 
+                                                @foreach (var city in Model.Cities)
+                                                {
+                                                    <option value="@city">@city</option>
+                                                }
                                             </select>
                                         </div>
+
                                         <div class="col-xs-6">
-                                            <select id="basic" class="selectpicker show-tick form-control">
-                                                <option> -Status- </option>
-                                                <option>Rent </option>
-                                                <option>Buy</option>
-                                                <option>Used</option>  
+                                            <select id="basic" name="status" class="form-control">
+                                                <option value="">-Status-</option>
+                                                <option value="true">Not Rented (Available)</option>
+                                                <option value="false">Rented (Not Available)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -60,23 +59,23 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <label for="price-range">Price range ($):</label>
-                                            <input type="text" class="span2" value="" data-slider-min="0" 
-                                                   data-slider-max="600" data-slider-step="5" 
-                                                   data-slider-value="[0,450]" id="price-range" ><br />
-                                            <b class="pull-left color">2000$</b> 
-                                            <b class="pull-right color">100000$</b>                                                
+                                            <input type="text" id="price-range" name="priceRange" class="span2" value=""
+                                                   data-slider-min="2000" data-slider-max="100000"
+                                                   data-slider-step="1000" data-slider-value="[2000,100000]"><br />
+                                            <b class="pull-left color">2000$</b>
+                                            <b class="pull-right color">100000$</b>
                                         </div>
                                         <div class="col-xs-6">
-                                            <label for="property-geo">Properity geo (m2) :</label>
-                                            <input type="text" class="span2" value="" data-slider-min="0" 
-                                                   data-slider-max="600" data-slider-step="5" 
-                                                   data-slider-value="[50,450]" id="property-geo" ><br />
-                                            <b class="pull-left color">40m</b> 
-                                            <b class="pull-right color">12000m</b>                                                
-                                        </div>                                            
+                                            <label for="property-geo">Property geo (m²) :</label>
+                                            <input type="text" id="property-geo" name="areaRange" class="span2" value=""
+                                                   data-slider-min="40" data-slider-max="12000"
+                                                   data-slider-step="100" data-slider-value="[40,12000]"><br />
+                                            <b class="pull-left color">40m²</b>
+                                            <b class="pull-right color">12000m²</b>
+                                        </div>
                                     </div>
-                                </fieldset>                                
 
+                                </fieldset>                                
                                 <fieldset >
                                     <div class="row">
                                         <div class="col-xs-12">  
@@ -115,13 +114,13 @@
 
                 <div class="col-md-12 clear"> 
                     <div id="list-type" class="proerty-th">
-                        @foreach (var property in Model)
+                        @foreach (var property in Model.Properities)
                         {
                             <div class="col-sm-6 col-md-4 p0">
                                 <div class="box-two proerty-item">
                                     <div class="item-thumb">
-                                        <a href="@Url.Action("Details","Property", new { propertyId = property.Id })" >
-                                            <img src="@(property.Images.FirstOrDefault()?.ImageUrl ?? "/assets/img/demo/property-3.jpg")">
+                                        <a href="@Url.Action("Details", "Property", new { propertyId = property.Id })">
+                                            <img src="@(property.Images?.FirstOrDefault()?.ImageUrl ?? "/assets/img/demo/property-3.jpg")" alt="@property.Name">
                                         </a>
                                     </div>
 
@@ -174,10 +173,12 @@
 
 <script>
     $(document).ready(function() {
-        $('.order_by_date, .order_by_price').on('click', function() {
-            var orderBy = $(this).data('orderby');
-            var order = $(this).data('order');
-            window.location.href = '@Url.Action("Index")' + '?orderBy=' + orderBy + '&order=' + order;
+        $("#price-range").slider({
+            tooltip: 'always'
+        });
+
+        $("#property-geo").slider({
+            tooltip: 'always'
         });
     });
 </script>
