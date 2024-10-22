@@ -2,59 +2,59 @@
 <div class="slider-area">
     <div class="slider">
         <div id="bg-slider" class="owl-carousel owl-theme">
-             <div class="item"><img src="~/assets/img/slide1/slider-image-1.jpg" alt="GTA V"></div>
-             <div class="item"><img src="~/assets/img/slide1/slider-image-2.jpg" alt="The Last of us"></div>
-             <div class="item"><img src="~/assets/img/slide1/slider-image-1.jpg" alt="GTA V"></div>
+            <div class="item"><img src="~/assets/img/slide1/slider-image-1.jpg" alt="GTA V"></div>
+            <div class="item"><img src="~/assets/img/slide1/slider-image-2.jpg" alt="The Last of us"></div>
+            <div class="item"><img src="~/assets/img/slide1/slider-image-1.jpg" alt="GTA V"></div>
         </div>
     </div>
     <div class="slider-content">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
                 <h2>property Searching Just Got So Easy</h2>
-                    <div class="search-form wow pulse" data-wow-delay="0.8s">
-                        <form asp-action="Index" method="get" class="form-inline">
-                            <button class="btn toggle-btn" type="button"><i class="fa fa-bars"></i></button>
+                <div class="search-form wow pulse" data-wow-delay="0.8s">
+                    <form asp-action="Index" method="post" class="form-inline">
+                        <button class="btn toggle-btn" type="button"><i class="fa fa-bars"></i></button>
 
-                            <!-- Key Word Input -->
-                            <div class="form-group">
-                                <input type="text" class="form-control" asp-for="keyWord" placeholder="Key word">
-                            </div>
+                        <!-- Key Word Input -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" asp-for="keyWord" placeholder="Key word">
+                        </div>
 
-                            <!-- City Selection Dropdown -->
-                            <div class="form-group">
-                                <select id="city" asp-for="City" class="selectpicker" data-live-search="true" title="Select your city">
-                                    @foreach (var city in Model.cities)
-                                    {
-                                        <option value="@city">@city</option>
-                                        
-                                    }
-                                </select>
-                            </div>
+                        <!-- City Selection Dropdown -->
+                        <div class="form-group">
+                            <select id="city" asp-for="City" class="selectpicker" data-live-search="true" title="Select your city">
+                                @foreach (var city in Model.cities)
+                                {
+                                <option value="@city">@city</option>
 
-                            <!-- Submit Button -->
-                            <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
+                                }
+                            </select>
+                        </div>
 
-                            <!-- Feature Checkboxes -->
-                            <div style="display: none;" class="search-toggle">
-                                <div class="search-row">
-                                    @foreach (var feature in Model.Features ?? new List<Feature>())
-                                    {
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="SelectedFeatures" value="@feature.Id"
-                                                       @(Model.SelectedFeatures != null && Model.SelectedFeatures.Contains(feature.Id) ? "checked" : "") />
-                                                @feature.Name
-                                            </label>
-                                        </div>
+                        <!-- Submit Button -->
+                        <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
+
+                        <!-- Feature Checkboxes -->
+                        <div style="display: none;" class="search-toggle">
+                            <div class="search-row">
+                                @foreach (var feature in Model.Features ?? new List<Feature>())
+                                {
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="SelectedFeatures" value="@feature.Id"
+                                                   @(Model.SelectedFeatures != null && Model.SelectedFeatures.Contains(feature.Id) ? "checked" : "") />
+                                            @feature.Name
+                                        </label>
                                     </div>
-                                    }
-
                                 </div>
-                            </div>
-                        </form>
+                                }
 
-                    </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
@@ -69,26 +69,26 @@
 
                 @if (Model?.Properities != null && Model.Properities.Any())
                 {
-                    @foreach (var property in Model.Properities)
-                    {
-                        <div class="col-sm-6 col-md-3 p0">
-                            <div class="box-two proerty-item">
-                                <div class="item-thumb">
-                                    <a href="property-1.html" ><img src="assets/img/demo/property-1.jpg"></a>
-                                </div>
-                                <div class="item-entry overflow">
-                                    <h5><a href="property-1.html" > @property.Name </a></h5>
-                                    <div class="dot-hr"></div>
-                                    <span class="pull-left"><b>Area :</b> @property.Area </span>
-                                    <span class="proerty-price pull-right">$ @property.Price</span>
-                                </div>
-                        
-                            </div>
+                @foreach (var property in Model.Properities)
+                {
+                <div class="col-sm-6 col-md-3 p0">
+                    <div class="box-two proerty-item">
+                        <div class="item-thumb">
+                            <a href="property-1.html" ><img src="assets/img/demo/property-1.jpg"></a>
+                        </div>
+                        <div class="item-entry overflow">
+                            <h5><a href="property-1.html" > @property.Name </a></h5>
+                            <div class="dot-hr"></div>
+                            <span class="pull-left"><b>Area :</b> @property.Area </span>
+                            <span class="proerty-price pull-right">$ @property.Price</span>
                         </div>
 
-                    }
+                    </div>
+                </div>
+
                 }
-                
+                }
+
 
 
                 <div class="col-sm-6 col-md-3 p0">
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
                 <!-- /.feature title -->
-                <h2>Our Customers Said  </h2> 
+                <h2>Our Customers Said  </h2>
             </div>
         </div>
 
@@ -189,16 +189,16 @@
                 <div class="col-md-12">
                     <div id="testimonial-slider">
                         <div class="item">
-                            <div class="client-text">                                
+                            <div class="client-text">
                                 <p>Nulla quis dapibus nisl. Suspendisse llam sed arcu ultried arcu ultricies !</p>
                                 <h4><strong>Ohidul Islam, </strong><i>Web Designer</i></h4>
                             </div>
-                            <div class="client-face wow fadeInRight" data-wow-delay=".9s"> 
+                            <div class="client-face wow fadeInRight" data-wow-delay=".9s">
                                 <img src="assets/img/client-face1.png" alt="">
                             </div>
                         </div>
                         <div class="item">
-                            <div class="client-text">                                
+                            <div class="client-text">
                                 <p>Nulla quis dapibus nisl. Suspendisse llam sed arcu ultried arcu ultricies !</p>
                                 <h4><strong>Ohidul Islam, </strong><i>Web Designer</i></h4>
                             </div>
@@ -207,7 +207,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="client-text">                                
+                            <div class="client-text">
                                 <p>Nulla quis dapibus nisl. Suspendisse llam sed arcu ultried arcu ultricies !</p>
                                 <h4><strong>Ohidul Islam, </strong><i>Web Designer</i></h4>
                             </div>
@@ -216,7 +216,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="client-text">                                
+                            <div class="client-text">
                                 <p>Nulla quis dapibus nisl. Suspendisse llam sed arcu ultried arcu ultricies !</p>
                                 <h4><strong>Ohidul Islam, </strong><i>Web Designer</i></h4>
                             </div>
@@ -238,7 +238,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
                 <!-- /.feature title -->
-                <h2>You can trust Us </h2> 
+                <h2>You can trust Us </h2>
             </div>
         </div>
         <div class="row">
@@ -264,8 +264,8 @@
                                 <h2 class="percent" id="counter1">0</h2>
                                 <h5>Properties in stock</h5>
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="count-item">
                             <div class="count-item-circle">
@@ -275,8 +275,8 @@
                                 <h2 class="percent" id="counter2">0</h2>
                                 <h5>City registered </h5>
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="count-item">
                             <div class="count-item-circle">
@@ -286,7 +286,7 @@
                                 <h2 class="percent"  id="counter3">5000</h2>
                                 <h5>DEALER BRANCHES</h5>
                             </div>
-                        </div> 
+                        </div>
 
                     </div>
                 </div>

@@ -40,7 +40,10 @@
                                 @if (!(bool)ViewData["is_manager"])
                                 {
                                     <td>
-                                        <a href="/pay/@payment.Id" style="padding: 0px 0px" class="btn btn-primary btn-xs">Pay Now</a>
+                                        <form asp-action="Pay" asp-route-paymentId="@payment.Id" asp-route-leaseAgreementId="@payment.LeaseAgreement.Id">
+                                            <button type="submit" style="padding: 0px 0px" class="btn btn-primary btn-xs">Pay Now</button>
+                                                
+                                        </form>
                                     </td>
                                 }
                                 <td></td>
@@ -105,7 +108,7 @@
 
         }
         <h3 class="text-center mt-4">
-            <a asp-action="Pay" class="btn btn-primary btn-lg">Pay Now</a>
+            <a asp-action="PayContract" asp-route-leaseAgreementId="@ViewData["lease_agreement_id"]" class="btn btn-primary btn-lg">Pay Now</a>
         </h3>
 
 
